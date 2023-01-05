@@ -28,4 +28,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           target_branch: "gh-pages"
           pre_build_commands: apk --update add nodejs
-          pre_publish_commands: bundle exec jekyll algolia
+          # pre_publish_commands: bundle exec jekyll algolia
