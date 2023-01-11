@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A Trick A Day",
   "dependencies": {
-    "@tailwindcss/typography": "^0.4.1",
+    "@tailwindcss/typography": "^0.5.9",
     "autoprefixer": "^10.4.13",
     "cssnano": "^5.1.14",
     "postcss": "^8.4.20",
