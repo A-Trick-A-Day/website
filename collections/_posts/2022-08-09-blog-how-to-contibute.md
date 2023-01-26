@@ -69,7 +69,7 @@ When all is okey, **edit** the following files:
    ```md
    ---
    title: "Your main title"
-   date: 2022-08-08T07:49:03+01:00 # on local developpement change this date to see the post but don't forget to change it
+   date: 2022-08-08T07:49:03+01:00 # on local development change this date to see the post but don't forget to change it
    layout: post
    authors: ["Your author name 1", "Your author name 2"]
    categories: ["Your category 1", "Your category 2"]
