@@ -4,7 +4,7 @@
   "description": "A Trick A Day",
   "dependencies": {
     "@tailwindcss/typography": "^0.4.1",
-    "autoprefixer": "^10.4.13",
+    "autoprefixer": "^10.4.14",
     "cssnano": "^5.1.15",
     "postcss": "^8.4.21",
     "postcss-import": "^15.1.0",
