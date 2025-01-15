@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <title>
+  
+    Private Dependency
+    -
+    A Trick A Day
+  
+</title>
+
+
+  <meta name="description" content="How to have private modules."/>
+
+
+<meta property="og:title" content="Private Dependency"/>
+
+<meta content="website" property="og:type"/>
+<meta property="og:url" content="/blog/2023-01-30-golang-private-dependency/"/>
+
+<meta property="og:description" content="How to have private modules."/>
+
+<meta content="summary" name="twitter:card"/>
+
+
+
+    <link rel="icon" href="/assets/images/logo/logo.svg" sizes="any" type="image/svg+xml">
+    <link href="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-theme-classic@1/dist/theme.min.css" rel="stylesheet"/>
+    <link href="/assets/css/style.css" rel="stylesheet">
+  </head>
+  <body class="page ">
+    <div id="menu-container"
+  class=" bg-red-600 h-screen w-screen fixed z-50 p-8 flex-col items-center justify-around bg-gradient-to-b from-yellow-400 to-red-800 opacity-90 overflow-hidden hidden">
+  <div id="menu-close" class="top-7 right-7 absolute">
+    <svg aria-hidden="true" focusable="false" class="h-6 text-white" role="img" xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 352 512">
+      <path fill="currentColor"
+        d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
+      </path>
+    </svg>
+  </div>
+  <div class="flex flex-col text-center text-white text-2xl font-bold">
+    
+    <a class="py-2" href="/a-trick-a-day/">Home</a>
+    
+    <a class="py-2" href="/a-trick-a-day/blog/">Blog</a>
+    
+    <a class="py-2" href="/a-trick-a-day/about/">About</a>
+    
+    <a class="py-2" href="/a-trick-a-day/category/golang">Golang</a>
+    
+  </div>
+</div>
+    <div class="container mx-auto px-6 md:px-4">
+      
+        
+        
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    
+        If you like this blog and want to contribute, read <a href="/blog/2022-08-09-blog-how-to-contibute/" class="underline">this post</a>.
+        
+  </div>
+</div>
+      
+      <header class="flex items-center justify-between py-6">
+  <div class="logo hidden md:block">
+  <a class="flex items-center hover:opacity-70 transition duration-300 ease-in-out" href="/">
+    
+    <img class="mr-2" height="36px" width="36px"
+      alt="A Trick A Day Logo" src="/assets/images/logo/logo.svg" />
+    
+    
+    <h2 class="text-2xl font-sans font-semibold">A Trick <strong>A Day</strong></h2>
+    
+  </a>
+</div>
+<div class="logo-mobile block md:hidden">
+  <a class="flex items-center hover:opacity-70 transition duration-300 ease-in-out" href="/">
+    
+    <img height="36px" width="36px"
+      alt="A Trick A Day Logo" src="/assets/images/logo/logo.svg" />
+    
+    
+    <h2 class="text-2xl font-sans font-semibold"></h2>
+    
+  </a>
+</div>
+  <div id="search-autocomplete"></div>
+
+  <div class="" id="menu-trigger">
+    <svg aria-hidden="true" class="text-black" data-icon="bars" data-prefix="fas" focusable="false" height="24"
+      role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"
+        fill="currentColor"></path>
+    </svg>
+  </div>
+</header>
+      
+
+
+
+
+<div class="py-6 md:py-12 lg:w-10/12 md:text-center mx-auto">
+  
+  <div class="font-medium text-gray-700">30 January 2023</div>
+  
+  <h1 class="heading text-4xl md:text-6xl font-bold font-sans md:leading-tight">
+    Private Dependency
+  </h1>
+  
+  <h2 class="text-xl text-gray-600 mt-2">How to have private modules.</h2>
+  
+</div>
+
+
+  <div class="flex flex-col pb-3 md:hidden">
+    
+      
+
+
+
+<div class="flex items-center mb-3 last:mb-0">
+  
+    <img height="48" width="48" class="rounded-full border-white border-2" src="/assets/images/author/sidorenko-konstantin.jpg" alt="Sidorenko Konstantin"/>
+  
+  <div>
+    <span class="font-medium text-sm ml-1 block">Sidorenko Konstantin</span>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://www.twitter.com/"></a>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://github.com/thecampagnards">thecampagnards</a>
+  </div>
+</div>
+
+    
+  </div>
+
+
+
+
+<div class="flex flex-col md:flex-row py-6 md:py-12">
+
+  <div class="w-full md:w-3/12 pr-3">
+    
+      <div class="flex flex-col hidden md:flex mb-3 md:mb-6">
+        
+          
+
+
+
+<div class="flex items-center mb-3 last:mb-0">
+  
+    <img height="48" width="48" class="rounded-full border-white border-2" src="/assets/images/author/sidorenko-konstantin.jpg" alt="Sidorenko Konstantin"/>
+  
+  <div>
+    <span class="font-medium text-sm ml-1 block">Sidorenko Konstantin</span>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://www.twitter.com/"></a>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://github.com/thecampagnards">thecampagnards</a>
+  </div>
+</div>
+
+        
+      </div>
+    
+
+    
+      <div class="hidden md:block">
+        
+          <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/golang">Golang</a>
+        
+          <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/development">Development</a>
+        
+      </div>
+    
+  </div>
+
+  <div class="w-full md:w-9/12">
+    <div class="prose post">
+      <h2 id="introduction-to-go-dependencies">Introduction to Go Dependencies</h2>
+
+<p>These are based on a <strong>module</strong> whose source is in a <strong>git repository</strong>.</p>
+
+<p>The dependency will target to a <strong>commit</strong> or a <strong>tag</strong>.</p>
+
+<p>Example:</p>
+
+<pre><code class="language-txt">golang.org/x/sys v0.0.0-20220818161305-2296e01440c6 // indirect =&gt; this target a commit
+gopkg.in/yaml.v2 v2.4.0 // indirect =&gt; this target a tag
+</code></pre>
+
+<p>When you <strong>add a dependency</strong> to your project you will do this:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>go get <span class="nt">-u</span> github.com/gofiber/fiber/v2 <span class="c"># this will use the latest version without @</span>
+</code></pre></div></div>
+
+<p>You will get a <code class="language-plaintext highlighter-rouge">go.mod</code> file like:</p>
+
+<pre><code class="language-txt">module test
+
+go 1.19
+
+require github.com/gofiber/fiber/v2 v2.41.0
+
+require (
+	github.com/andybalholm/brotli v1.0.4 // indirect
+	github.com/klauspost/compress v1.15.15 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/mattn/go-isatty v0.0.17 // indirect
+	github.com/mattn/go-runewidth v0.0.14 // indirect
+	github.com/rivo/uniseg v0.4.3 // indirect
+	github.com/valyala/bytebufferpool v1.0.0 // indirect
+	github.com/valyala/fasthttp v1.44.0 // indirect
+	github.com/valyala/tcplisten v1.0.0 // indirect
+	golang.org/x/sys v0.4.0 // indirect
+)
+</code></pre>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    For more information on go and its dependencies management, check <a href="https://go.dev/doc/modules/managing-dependencies">this page</a>
+  </div>
+</div>
+
+<div id="alert-border-4" class="flex p-4 mb-4 bg-yellow-100 border-t-4 border-yellow-500 dark:bg-yellow-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-yellow-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-yellow-700">
+    If you need to expose your module (or try to always), name it according to its git repository URL.
+  </div>
+</div>
+
+<h2 id="how-to-use-private-dependency">How to use private dependency</h2>
+
+<p>What if my <strong>dependencies</strong> are in a <strong>private</strong> git repository ?</p>
+
+<p>Let’s use <strong>gitlab as a private repository</strong> which is the most common in companies.</p>
+
+<p>Here is the project <a href="https://gitlab.com/a-trick-a-day/golang-private-dependency">https://gitlab.com/a-trick-a-day/golang-private-dependency</a>, you can’t see it because it’s a private project.</p>
+
+<p><img src="/assets/images/posts/2023-01-30-golang-private-dependency_gitlab-repository.jpg" alt="gitlab repository" /></p>
+
+<p>It’s a simple <code class="language-plaintext highlighter-rouge">main.go</code>:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="s">"fmt"</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">Hello</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">Hello</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"Hello"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>and its <code class="language-plaintext highlighter-rouge">go.mod</code>:</p>
+
+<pre><code class="language-txt">module gitlab.com/a-trick-a-day/golang-private-dependency
+
+go 1.19
+</code></pre>
+
+<p>In my case I will use a <a href="https://docs.gitlab.com/ee/user/project/deploy_tokens/">gitlab deploy token</a> with the read repository permission.
+Depending of your project you can <strong>use</strong> a <strong>personal</strong> or a <strong>group token</strong> with <strong>read repository permission</strong>.</p>
+
+<p>Run this commands:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git config <span class="nt">--global</span> url.https://gitlab+deploy-token-1715684:zaA_MonZ6XskfCVM7ACm@gitlab.com.insteadOf https://gitlab.com <span class="c"># will rewrite the url during remote actions</span>
+go <span class="nb">env</span> <span class="nt">-w</span> <span class="nv">GOPRIVATE</span><span class="o">=</span>gitlab.com <span class="c"># will tell to go it's a private repo</span>
+go <span class="nb">install </span>gitlab.com/a-trick-a-day/golang-private-dependency@latest <span class="c"># will install the latest version of golang-private-dependency</span>
+</code></pre></div></div>
+
+<p>For <a href="https://goproxy.io/docs/GOPRIVATE-env.html">GOPRIVATE</a>, the go command defaults to downloading modules from the public Go module mirror at goproxy.io.
+The GOPRIVATE environment variable controls which modules the go command considers to be private (not available publicly) and should therefore not use the proxy or checksum database.</p>
+
+<p>You should be able to run this command now:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~/go/bin/golang-private-dependency
+Hello
+</code></pre></div></div>
+
+<p>Now to use this as dependency you can do this:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜  go mod init <span class="nb">test</span> <span class="c"># to init my module not needed if you already have it</span>
+go: creating new go.mod: module <span class="nb">test</span>
+➜  go get gitlab.com/a-trick-a-day/golang-private-dependency
+go: added gitlab.com/a-trick-a-day/golang-private-dependency v0.0.0-20230123145256-d7f205052328
+</code></pre></div></div>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    Don't forget to do a<b>go mod tidy</b> after updating your dependencies.
+  </div>
+</div>
+
+<p><code class="language-plaintext highlighter-rouge">go.mod</code>:</p>
+
+<pre><code class="language-txt">module test
+
+go 1.18
+
+require gitlab.com/a-trick-a-day/golang-private-dependency v0.0.0-20230123145256-d7f205052328 // indirect
+</code></pre>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    Inside your gitlab CI you can use the <b>CI_JOB_TOKEN</b><br /><b>git config --global url.https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com.insteadOf https://gitlab.com</b>
+  </div>
+</div>
+
+<p>During development, you should be able to:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"fmt"</span>
+
+	<span class="n">d</span> <span class="s">"gitlab.com/a-trick-a-day/golang-private-dependency"</span>
+<span class="p">)</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"aa"</span><span class="p">)</span>
+	<span class="n">d</span><span class="o">.</span><span class="n">Hello</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In our case it doesn’t work because we try to import a main package.</p>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    Try to avoid <b>-</b> in the names of go libraries, it should have a <a href="https://go.dev/ref/spec#identifier">valid identifiers</a>.
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+
+
+  <div class="py-6 mt-6 border-t-2 block md:hidden">
+    <h3 class="text-sm font-medium mb-1">Categories</h3>
+    <div>
+      
+        <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/golang">Golang</a>
+      
+        <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/development">Development</a>
+      
+    </div>
+  </div>
+
+
+
+<div id="disqus_thread"></div>
+<script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+
+    var disqus_config = function () {
+    this.page.url = "https://a-trick-a-day.github.io/blog/2023-01-30-golang-private-dependency/";  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = "/blog/2023-01-30-golang-private-dependency/"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://a-trick-a-day.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer class="py-6 border-t-2">
+  <div class="container mx-auto">
+    <div class="flex mb-2">
+      
+      <a class="py-2 mr-2" href="https://github.com/a-trick-a-day/a-trick-a-day.github.io"><img width="24" height="24" src="https://simpleicons.org/icons/github.svg" alt="Github" /></a>
+      
+    </div>
+    <div class="text-sm text-gray-600">
+      <span>Free Jekyll theme by</span>
+<a class="text-yellow-500" href="
+        https://www.zerostatic.io">Zerostatic Themes</a>
+    </div>
+</footer>
+    </div>
+    
+    
+    
+
+    <script type="text/javascript" src="/assets/js/hamburger.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch"></script>
+    <script type="text/javascript">
+      const { autocomplete, getAlgoliaResults } = window['@algolia/autocomplete-js'];
+      const searchClient = algoliasearch("8DJJ22AAKU", "5cd6440f030be29cec8c1d622bcca722")
+      autocomplete({
+        container: '#search-autocomplete',
+        placeholder: 'Search for posts',
+        getSources({ query }) {
+          return [
+            {
+              // sourceId: 'posts',
+              getItems() {
+                return getAlgoliaResults({
+                  searchClient,
+                  queries: [
+                    {
+                      indexName: 'posts',
+                      query,
+                      params: {
+                        hitsPerPage: 5,
+                        attributesToSnippet: ['name:10', 'description:35'],
+                        snippetEllipsisText: '…',
+                      },
+                    },
+                  ],
+                });
+              },
+              templates: {
+                item({ item, components, html }) {
+                  return html`<a class="aa-ItemWrapper" href="/${item.url.substring(1)}">
+                    <div class="aa-ItemContent">
+                      ${item.thumbnail ? html`<div class="aa-ItemIcon aa-ItemIcon--alignTop">
+                        <img
+                          src="/${item.thumbnail}"
+                          alt="${item.title}"
+                          width="40"
+                          height="40"
+                        />
+                      </div>` : ""}
+                      <div class="aa-ItemContentBody">
+                        <div class="aa-ItemContentTitle">
+                          ${components.Highlight({ hit: item, attribute: 'title' })}
+                        </div>
+                        <div class="aa-ItemContentDescription">
+                          ${item.authors ? html`By <strong>${item.authors[0]}</strong> in ${' '}` : ""}
+                          ${item.categories ? html`<strong>${item.categories[0]}</strong>` : ""}
+                        </div>
+                      </div>
+                    </div>
+                  </a>`;
+                },
+              },
+            },
+          ];
+        },
+        render({ children, render, html }, root) {
+          render(html`<div class="aa-SomeResults">${children}</div>`, root);
+        },
+        renderNoResults({ children, render, html }, root) {
+          render(html`<div class="aa-NoResults"><div class="aa-PanelLayout aa-Panel--scrollable">No posts found</div></div>`, root);
+        },
+      });
+    </script>
+  </body>
+</html>

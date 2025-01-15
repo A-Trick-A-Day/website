@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <title>
+  
+    Go & Context
+    -
+    A Trick A Day
+  
+</title>
+
+
+  <meta name="description" content="Why it is interesting to propagate the context to lower layers."/>
+
+
+<meta property="og:title" content="Go & Context"/>
+
+<meta content="website" property="og:type"/>
+<meta property="og:url" content="/blog/2022-08-18-golang-go-&-context/"/>
+
+<meta property="og:description" content="Why it is interesting to propagate the context to lower layers."/>
+
+<meta content="summary" name="twitter:card"/>
+
+
+
+    <link rel="icon" href="/assets/images/logo/logo.svg" sizes="any" type="image/svg+xml">
+    <link href="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-theme-classic@1/dist/theme.min.css" rel="stylesheet"/>
+    <link href="/assets/css/style.css" rel="stylesheet">
+  </head>
+  <body class="page ">
+    <div id="menu-container"
+  class=" bg-red-600 h-screen w-screen fixed z-50 p-8 flex-col items-center justify-around bg-gradient-to-b from-yellow-400 to-red-800 opacity-90 overflow-hidden hidden">
+  <div id="menu-close" class="top-7 right-7 absolute">
+    <svg aria-hidden="true" focusable="false" class="h-6 text-white" role="img" xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 352 512">
+      <path fill="currentColor"
+        d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
+      </path>
+    </svg>
+  </div>
+  <div class="flex flex-col text-center text-white text-2xl font-bold">
+    
+    <a class="py-2" href="/a-trick-a-day/">Home</a>
+    
+    <a class="py-2" href="/a-trick-a-day/blog/">Blog</a>
+    
+    <a class="py-2" href="/a-trick-a-day/about/">About</a>
+    
+    <a class="py-2" href="/a-trick-a-day/category/golang">Golang</a>
+    
+  </div>
+</div>
+    <div class="container mx-auto px-6 md:px-4">
+      
+        
+        
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    
+        If you like this blog and want to contribute, read <a href="/blog/2022-08-09-blog-how-to-contibute/" class="underline">this post</a>.
+        
+  </div>
+</div>
+      
+      <header class="flex items-center justify-between py-6">
+  <div class="logo hidden md:block">
+  <a class="flex items-center hover:opacity-70 transition duration-300 ease-in-out" href="/">
+    
+    <img class="mr-2" height="36px" width="36px"
+      alt="A Trick A Day Logo" src="/assets/images/logo/logo.svg" />
+    
+    
+    <h2 class="text-2xl font-sans font-semibold">A Trick <strong>A Day</strong></h2>
+    
+  </a>
+</div>
+<div class="logo-mobile block md:hidden">
+  <a class="flex items-center hover:opacity-70 transition duration-300 ease-in-out" href="/">
+    
+    <img height="36px" width="36px"
+      alt="A Trick A Day Logo" src="/assets/images/logo/logo.svg" />
+    
+    
+    <h2 class="text-2xl font-sans font-semibold"></h2>
+    
+  </a>
+</div>
+  <div id="search-autocomplete"></div>
+
+  <div class="" id="menu-trigger">
+    <svg aria-hidden="true" class="text-black" data-icon="bars" data-prefix="fas" focusable="false" height="24"
+      role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"
+        fill="currentColor"></path>
+    </svg>
+  </div>
+</header>
+      
+
+
+
+
+<div class="py-6 md:py-12 lg:w-10/12 md:text-center mx-auto">
+  
+  <div class="font-medium text-gray-700">18 August 2022</div>
+  
+  <h1 class="heading text-4xl md:text-6xl font-bold font-sans md:leading-tight">
+    Go & Context
+  </h1>
+  
+  <h2 class="text-xl text-gray-600 mt-2">Why it is interesting to propagate the context to lower layers.</h2>
+  
+</div>
+
+
+  <div class="flex flex-col pb-3 md:hidden">
+    
+      
+
+
+
+<div class="flex items-center mb-3 last:mb-0">
+  
+    <img height="48" width="48" class="rounded-full border-white border-2" src="/assets/images/author/sidorenko-konstantin.jpg" alt="Sidorenko Konstantin"/>
+  
+  <div>
+    <span class="font-medium text-sm ml-1 block">Sidorenko Konstantin</span>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://www.twitter.com/"></a>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://github.com/thecampagnards">thecampagnards</a>
+  </div>
+</div>
+
+    
+  </div>
+
+
+
+
+<div class="flex flex-col md:flex-row py-6 md:py-12">
+
+  <div class="w-full md:w-3/12 pr-3">
+    
+      <div class="flex flex-col hidden md:flex mb-3 md:mb-6">
+        
+          
+
+
+
+<div class="flex items-center mb-3 last:mb-0">
+  
+    <img height="48" width="48" class="rounded-full border-white border-2" src="/assets/images/author/sidorenko-konstantin.jpg" alt="Sidorenko Konstantin"/>
+  
+  <div>
+    <span class="font-medium text-sm ml-1 block">Sidorenko Konstantin</span>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://www.twitter.com/"></a>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://github.com/thecampagnards">thecampagnards</a>
+  </div>
+</div>
+
+        
+      </div>
+    
+
+    
+      <div class="hidden md:block">
+        
+          <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/golang">Golang</a>
+        
+          <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/development">Development</a>
+        
+      </div>
+    
+  </div>
+
+  <div class="w-full md:w-9/12">
+    <div class="prose post">
+      <p>One way to think of <strong>context</strong> in go is that it allows you to pass a “context” to your program. A context that <strong>signals a time limit</strong>, <strong>deadline</strong> or channel to <strong>indicate when</strong> to <strong>stop working</strong> and come back. For example, if you are <strong>requesting a web server</strong> or running a system command, it is usually a good idea to have a <strong>timeout for production systems</strong>. This is because if an API you depend on is running slowly, you wouldn’t want to log <strong>too many requests on your application</strong>, as this could end up <strong>increasing the load</strong> and degrading the performance of all the requests you are serving. Like a waterfall effect. This is where a delay or delay context can come in handy.</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"context"</span>
+	<span class="s">"fmt"</span>
+<span class="p">)</span>
+
+<span class="k">func</span> <span class="n">doSomething</span><span class="p">(</span><span class="n">ctx</span> <span class="n">context</span><span class="o">.</span><span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"Doing something!"</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">ctx</span> <span class="o">:=</span> <span class="n">context</span><span class="o">.</span><span class="n">TODO</span><span class="p">()</span>
+	<span class="n">doSomething</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Go playground: <a href="https://go.dev/play/p/Kq7YyLxqgB3">https://go.dev/play/p/Kq7YyLxqgB3</a>.</p>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    Try to always put this parameter first in your function.
+  </div>
+</div>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    The <strong>context.Background()</strong> function creates an empty context like <strong>context.TODO()</strong> does, but it is designed to be used when you intend to start a known context.<br />Both functions do the same thing: they return an empty context that can be used like <strong>context.Background()</strong>. The difference is in the way you signal your intention to other developers. If you are not sure which function to use, <strong>context.Background()</strong> is a good default option.
+  </div>
+</div>
+
+<p>Another example, by <strong>passing this context.Context</strong> value into a function that then makes a <strong>call to your DB</strong>, the database <strong>query</strong> will also be <strong>terminated</strong> if it is still running when the <strong>client disconnects</strong>.</p>
+
+<h2 id="ending-a-context">Ending a Context</h2>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"fmt"</span>
+	<span class="s">"net/http"</span>
+	<span class="s">"time"</span>
+<span class="p">)</span>
+
+<span class="k">func</span> <span class="n">example</span><span class="p">(</span><span class="n">w</span> <span class="n">http</span><span class="o">.</span><span class="n">ResponseWriter</span><span class="p">,</span> <span class="n">req</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">ctx</span> <span class="o">:=</span> <span class="n">req</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"start"</span><span class="p">)</span>
+	<span class="k">defer</span> <span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"end"</span><span class="p">)</span>
+
+	<span class="k">select</span> <span class="p">{</span>
+	<span class="k">case</span> <span class="o">&lt;-</span><span class="n">time</span><span class="o">.</span><span class="n">After</span><span class="p">(</span><span class="m">10</span> <span class="o">*</span> <span class="n">time</span><span class="o">.</span><span class="n">Second</span><span class="p">)</span><span class="o">:</span>
+		<span class="n">fmt</span><span class="o">.</span><span class="n">Fprintf</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s">"example</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+	<span class="k">case</span> <span class="o">&lt;-</span><span class="n">ctx</span><span class="o">.</span><span class="n">Done</span><span class="p">()</span><span class="o">:</span>
+		<span class="n">err</span> <span class="o">:=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">Err</span><span class="p">()</span>
+		<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"error:"</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+		<span class="n">http</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">Error</span><span class="p">(),</span> <span class="n">http</span><span class="o">.</span><span class="n">StatusInternalServerError</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">http</span><span class="o">.</span><span class="n">HandleFunc</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="n">example</span><span class="p">)</span>
+	<span class="n">http</span><span class="o">.</span><span class="n">ListenAndServe</span><span class="p">(</span><span class="s">":8080"</span><span class="p">,</span> <span class="no">nil</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Go playground: <a href="https://go.dev/play/p/3vneiEUIMfr">https://go.dev/play/p/3vneiEUIMfr</a>.</p>
+
+<p>Output:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>go run <span class="nb">.</span>
+start
+error: context canceled
+end
+</code></pre></div></div>
+
+<p>This way <strong>some of the libraries</strong> you use or your own <strong>can stop the actions</strong> and <strong>avoid overloading</strong> your service.</p>
+
+<h2 id="share-variables">Share variables</h2>
+
+<p>You can also use the context to pass variables:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"context"</span>
+	<span class="s">"fmt"</span>
+<span class="p">)</span>
+
+<span class="k">func</span> <span class="n">doSomething</span><span class="p">(</span><span class="n">ctx</span> <span class="n">context</span><span class="o">.</span><span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"doSomething: myKey's value is %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">ctx</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="s">"myKey"</span><span class="p">))</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">ctx</span> <span class="o">:=</span> <span class="n">context</span><span class="o">.</span><span class="n">Background</span><span class="p">()</span>
+	<span class="n">ctx</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">WithValue</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="s">"myKey"</span><span class="p">,</span> <span class="s">"myValue"</span><span class="p">)</span>
+	<span class="n">doSomething</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Go playground: <a href="https://go.dev/play/p/R1MhUD2v96Q">https://go.dev/play/p/R1MhUD2v96Q</a>.</p>
+
+<p>This is what is used a lot to <strong>propagate the logger</strong>. And many logging libraries will offer you a <strong>handler to fill the logger</strong> with information on each request, e.g. path, request ID etc. And <strong>a function to retrieve this logger</strong> from the context.</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"context"</span>
+	<span class="s">"net/http"</span>
+	<span class="s">"os"</span>
+	<span class="s">"time"</span>
+
+	<span class="s">"github.com/justinas/alice"</span>
+	<span class="s">"github.com/rs/zerolog"</span>
+	<span class="s">"github.com/rs/zerolog/hlog"</span>
+	<span class="s">"github.com/rs/zerolog/log"</span>
+<span class="p">)</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">log</span> <span class="o">:=</span> <span class="n">zerolog</span><span class="o">.</span><span class="n">New</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">Stdout</span><span class="p">)</span><span class="o">.</span><span class="n">With</span><span class="p">()</span><span class="o">.</span>
+		<span class="n">Timestamp</span><span class="p">()</span><span class="o">.</span>
+		<span class="n">Str</span><span class="p">(</span><span class="s">"role"</span><span class="p">,</span> <span class="s">"my-example"</span><span class="p">)</span><span class="o">.</span>
+		<span class="n">Logger</span><span class="p">()</span>
+
+	<span class="n">c</span> <span class="o">:=</span> <span class="n">alice</span><span class="o">.</span><span class="n">New</span><span class="p">()</span>
+
+	<span class="c">// Install the logger handler with default output on the console</span>
+	<span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">Append</span><span class="p">(</span><span class="n">hlog</span><span class="o">.</span><span class="n">NewHandler</span><span class="p">(</span><span class="n">log</span><span class="p">))</span>
+
+	<span class="c">// Install some provided extra handler to set some request's context fields.</span>
+	<span class="c">// Thanks to that handler, all our logs will come with some prepopulated fields.</span>
+	<span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">Append</span><span class="p">(</span><span class="n">hlog</span><span class="o">.</span><span class="n">AccessHandler</span><span class="p">(</span><span class="k">func</span><span class="p">(</span><span class="n">r</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">size</span> <span class="kt">int</span><span class="p">,</span> <span class="n">duration</span> <span class="n">time</span><span class="o">.</span><span class="n">Duration</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">hlog</span><span class="o">.</span><span class="n">FromRequest</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="n">Info</span><span class="p">()</span><span class="o">.</span>
+			<span class="n">Str</span><span class="p">(</span><span class="s">"method"</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">Method</span><span class="p">)</span><span class="o">.</span>
+			<span class="n">Stringer</span><span class="p">(</span><span class="s">"url"</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">URL</span><span class="p">)</span><span class="o">.</span>
+			<span class="n">Int</span><span class="p">(</span><span class="s">"status"</span><span class="p">,</span> <span class="n">status</span><span class="p">)</span><span class="o">.</span>
+			<span class="n">Int</span><span class="p">(</span><span class="s">"size"</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span><span class="o">.</span>
+			<span class="n">Dur</span><span class="p">(</span><span class="s">"duration"</span><span class="p">,</span> <span class="n">duration</span><span class="p">)</span><span class="o">.</span>
+			<span class="n">Msg</span><span class="p">(</span><span class="s">""</span><span class="p">)</span>
+		<span class="n">getDB</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">Context</span><span class="p">())</span>
+	<span class="p">}))</span>
+	<span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">Append</span><span class="p">(</span><span class="n">hlog</span><span class="o">.</span><span class="n">RemoteAddrHandler</span><span class="p">(</span><span class="s">"ip"</span><span class="p">))</span>
+	<span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">Append</span><span class="p">(</span><span class="n">hlog</span><span class="o">.</span><span class="n">UserAgentHandler</span><span class="p">(</span><span class="s">"user_agent"</span><span class="p">))</span>
+	<span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">Append</span><span class="p">(</span><span class="n">hlog</span><span class="o">.</span><span class="n">RefererHandler</span><span class="p">(</span><span class="s">"referer"</span><span class="p">))</span>
+	<span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">Append</span><span class="p">(</span><span class="n">hlog</span><span class="o">.</span><span class="n">RequestIDHandler</span><span class="p">(</span><span class="s">"req_id"</span><span class="p">,</span> <span class="s">"Request-Id"</span><span class="p">))</span>
+
+	<span class="c">// Here is your final handler</span>
+	<span class="n">h</span> <span class="o">:=</span> <span class="n">c</span><span class="o">.</span><span class="n">Then</span><span class="p">(</span><span class="n">http</span><span class="o">.</span><span class="n">HandlerFunc</span><span class="p">(</span><span class="k">func</span><span class="p">(</span><span class="n">w</span> <span class="n">http</span><span class="o">.</span><span class="n">ResponseWriter</span><span class="p">,</span> <span class="n">r</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="p">{</span>
+		<span class="c">// Get the logger from the request's context. You can safely assume it</span>
+		<span class="c">// will be always there: if the handler is removed, hlog.FromRequest</span>
+		<span class="c">// will return a no-op logger.</span>
+		<span class="n">hlog</span><span class="o">.</span><span class="n">FromRequest</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="n">Info</span><span class="p">()</span><span class="o">.</span><span class="n">Msg</span><span class="p">(</span><span class="s">"Hello this is my example"</span><span class="p">)</span>
+	<span class="p">}))</span>
+	<span class="n">http</span><span class="o">.</span><span class="n">Handle</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">http</span><span class="o">.</span><span class="n">ListenAndServe</span><span class="p">(</span><span class="s">":8080"</span><span class="p">,</span> <span class="no">nil</span><span class="p">);</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">()</span><span class="o">.</span><span class="n">Err</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="o">.</span><span class="n">Msg</span><span class="p">(</span><span class="s">"Startup failed"</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">getDB</span><span class="p">(</span><span class="n">ctx</span> <span class="n">context</span><span class="o">.</span><span class="n">Context</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">log</span><span class="o">.</span><span class="n">Ctx</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="o">.</span><span class="n">Info</span><span class="p">()</span><span class="o">.</span><span class="n">Msg</span><span class="p">(</span><span class="s">"get from db"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Go playground: <a href="https://go.dev/play/p/hUrDLZVGxd2">https://go.dev/play/p/hUrDLZVGxd2</a>.</p>
+
+<p>Ouput:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="nl">"level"</span><span class="p">:</span><span class="s2">"info"</span><span class="p">,</span><span class="nl">"role"</span><span class="p">:</span><span class="s2">"my-example"</span><span class="p">,</span><span class="nl">"ip"</span><span class="p">:</span><span class="s2">"127.0.0.1:54224"</span><span class="p">,</span><span class="nl">"user_agent"</span><span class="p">:</span><span class="s2">"curl/7.68.0"</span><span class="p">,</span><span class="nl">"req_id"</span><span class="p">:</span><span class="s2">"cbuk241ludm8ge0akv80"</span><span class="p">,</span><span class="nl">"time"</span><span class="p">:</span><span class="s2">"2022-08-17T21:27:12+02:00"</span><span class="p">,</span><span class="nl">"message"</span><span class="p">:</span><span class="s2">"Hello this is my example"</span><span class="p">}</span><span class="w">
+</span><span class="p">{</span><span class="nl">"level"</span><span class="p">:</span><span class="s2">"info"</span><span class="p">,</span><span class="nl">"role"</span><span class="p">:</span><span class="s2">"my-example"</span><span class="p">,</span><span class="nl">"ip"</span><span class="p">:</span><span class="s2">"127.0.0.1:54224"</span><span class="p">,</span><span class="nl">"user_agent"</span><span class="p">:</span><span class="s2">"curl/7.68.0"</span><span class="p">,</span><span class="nl">"req_id"</span><span class="p">:</span><span class="s2">"cbuk241ludm8ge0akv80"</span><span class="p">,</span><span class="nl">"method"</span><span class="p">:</span><span class="s2">"HEAD"</span><span class="p">,</span><span class="nl">"url"</span><span class="p">:</span><span class="s2">"/"</span><span class="p">,</span><span class="nl">"status"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nl">"size"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nl">"duration"</span><span class="p">:</span><span class="mf">0.2451</span><span class="p">,</span><span class="nl">"time"</span><span class="p">:</span><span class="s2">"2022-08-17T21:27:12+02:00"</span><span class="p">}</span><span class="w">
+</span><span class="p">{</span><span class="nl">"level"</span><span class="p">:</span><span class="s2">"info"</span><span class="p">,</span><span class="nl">"role"</span><span class="p">:</span><span class="s2">"my-example"</span><span class="p">,</span><span class="nl">"ip"</span><span class="p">:</span><span class="s2">"127.0.0.1:54224"</span><span class="p">,</span><span class="nl">"user_agent"</span><span class="p">:</span><span class="s2">"curl/7.68.0"</span><span class="p">,</span><span class="nl">"req_id"</span><span class="p">:</span><span class="s2">"cbuk241ludm8ge0akv80"</span><span class="p">,</span><span class="nl">"time"</span><span class="p">:</span><span class="s2">"2022-08-17T21:27:12+02:00"</span><span class="p">,</span><span class="nl">"message"</span><span class="p">:</span><span class="s2">"get from db"</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>As you can see even up to <strong>getDB</strong> you <strong>get the logger</strong> and its <strong>information</strong>.</p>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    Very useful for tracing to follow the logs of a request and debug more easily.
+  </div>
+</div>
+
+<h2 id="references">References</h2>
+
+<p><a href="https://www.digitalocean.com/community/tutorials/how-to-use-contexts-in-go">https://www.digitalocean.com/community/tutorials/how-to-use-contexts-in-go</a></p>
+
+<p><a href="https://gobyexample.com/context">https://gobyexample.com/context</a></p>
+
+    </div>
+  </div>
+
+</div>
+
+
+  <div class="py-6 mt-6 border-t-2 block md:hidden">
+    <h3 class="text-sm font-medium mb-1">Categories</h3>
+    <div>
+      
+        <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/golang">Golang</a>
+      
+        <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/development">Development</a>
+      
+    </div>
+  </div>
+
+
+
+<div id="disqus_thread"></div>
+<script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+
+    var disqus_config = function () {
+    this.page.url = "https://a-trick-a-day.github.io/blog/2022-08-18-golang-go-&-context/";  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = "/blog/2022-08-18-golang-go-&-context/"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://a-trick-a-day.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer class="py-6 border-t-2">
+  <div class="container mx-auto">
+    <div class="flex mb-2">
+      
+      <a class="py-2 mr-2" href="https://github.com/a-trick-a-day/a-trick-a-day.github.io"><img width="24" height="24" src="https://simpleicons.org/icons/github.svg" alt="Github" /></a>
+      
+    </div>
+    <div class="text-sm text-gray-600">
+      <span>Free Jekyll theme by</span>
+<a class="text-yellow-500" href="
+        https://www.zerostatic.io">Zerostatic Themes</a>
+    </div>
+</footer>
+    </div>
+    
+    
+    
+
+    <script type="text/javascript" src="/assets/js/hamburger.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch"></script>
+    <script type="text/javascript">
+      const { autocomplete, getAlgoliaResults } = window['@algolia/autocomplete-js'];
+      const searchClient = algoliasearch("8DJJ22AAKU", "5cd6440f030be29cec8c1d622bcca722")
+      autocomplete({
+        container: '#search-autocomplete',
+        placeholder: 'Search for posts',
+        getSources({ query }) {
+          return [
+            {
+              // sourceId: 'posts',
+              getItems() {
+                return getAlgoliaResults({
+                  searchClient,
+                  queries: [
+                    {
+                      indexName: 'posts',
+                      query,
+                      params: {
+                        hitsPerPage: 5,
+                        attributesToSnippet: ['name:10', 'description:35'],
+                        snippetEllipsisText: '…',
+                      },
+                    },
+                  ],
+                });
+              },
+              templates: {
+                item({ item, components, html }) {
+                  return html`<a class="aa-ItemWrapper" href="/${item.url.substring(1)}">
+                    <div class="aa-ItemContent">
+                      ${item.thumbnail ? html`<div class="aa-ItemIcon aa-ItemIcon--alignTop">
+                        <img
+                          src="/${item.thumbnail}"
+                          alt="${item.title}"
+                          width="40"
+                          height="40"
+                        />
+                      </div>` : ""}
+                      <div class="aa-ItemContentBody">
+                        <div class="aa-ItemContentTitle">
+                          ${components.Highlight({ hit: item, attribute: 'title' })}
+                        </div>
+                        <div class="aa-ItemContentDescription">
+                          ${item.authors ? html`By <strong>${item.authors[0]}</strong> in ${' '}` : ""}
+                          ${item.categories ? html`<strong>${item.categories[0]}</strong>` : ""}
+                        </div>
+                      </div>
+                    </div>
+                  </a>`;
+                },
+              },
+            },
+          ];
+        },
+        render({ children, render, html }, root) {
+          render(html`<div class="aa-SomeResults">${children}</div>`, root);
+        },
+        renderNoResults({ children, render, html }, root) {
+          render(html`<div class="aa-NoResults"><div class="aa-PanelLayout aa-Panel--scrollable">No posts found</div></div>`, root);
+        },
+      });
+    </script>
+  </body>
+</html>

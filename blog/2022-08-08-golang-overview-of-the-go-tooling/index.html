@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <title>
+  
+    Overview of the Go tooling
+    -
+    A Trick A Day
+  
+</title>
+
+
+  <meta name="description" content="I'll show you some interesting Go tools that you can integrate into your project."/>
+
+
+<meta property="og:title" content="Overview of the Go tooling"/>
+
+<meta content="website" property="og:type"/>
+<meta property="og:url" content="/blog/2022-08-08-golang-overview-of-the-go-tooling/"/>
+
+<meta property="og:description" content="I'll show you some interesting Go tools that you can integrate into your project."/>
+
+<meta content="summary" name="twitter:card"/>
+
+
+
+    <link rel="icon" href="/assets/images/logo/logo.svg" sizes="any" type="image/svg+xml">
+    <link href="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-theme-classic@1/dist/theme.min.css" rel="stylesheet"/>
+    <link href="/assets/css/style.css" rel="stylesheet">
+  </head>
+  <body class="page ">
+    <div id="menu-container"
+  class=" bg-red-600 h-screen w-screen fixed z-50 p-8 flex-col items-center justify-around bg-gradient-to-b from-yellow-400 to-red-800 opacity-90 overflow-hidden hidden">
+  <div id="menu-close" class="top-7 right-7 absolute">
+    <svg aria-hidden="true" focusable="false" class="h-6 text-white" role="img" xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 352 512">
+      <path fill="currentColor"
+        d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
+      </path>
+    </svg>
+  </div>
+  <div class="flex flex-col text-center text-white text-2xl font-bold">
+    
+    <a class="py-2" href="/a-trick-a-day/">Home</a>
+    
+    <a class="py-2" href="/a-trick-a-day/blog/">Blog</a>
+    
+    <a class="py-2" href="/a-trick-a-day/about/">About</a>
+    
+    <a class="py-2" href="/a-trick-a-day/category/golang">Golang</a>
+    
+  </div>
+</div>
+    <div class="container mx-auto px-6 md:px-4">
+      
+        
+        
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    
+        If you like this blog and want to contribute, read <a href="/blog/2022-08-09-blog-how-to-contibute/" class="underline">this post</a>.
+        
+  </div>
+</div>
+      
+      <header class="flex items-center justify-between py-6">
+  <div class="logo hidden md:block">
+  <a class="flex items-center hover:opacity-70 transition duration-300 ease-in-out" href="/">
+    
+    <img class="mr-2" height="36px" width="36px"
+      alt="A Trick A Day Logo" src="/assets/images/logo/logo.svg" />
+    
+    
+    <h2 class="text-2xl font-sans font-semibold">A Trick <strong>A Day</strong></h2>
+    
+  </a>
+</div>
+<div class="logo-mobile block md:hidden">
+  <a class="flex items-center hover:opacity-70 transition duration-300 ease-in-out" href="/">
+    
+    <img height="36px" width="36px"
+      alt="A Trick A Day Logo" src="/assets/images/logo/logo.svg" />
+    
+    
+    <h2 class="text-2xl font-sans font-semibold"></h2>
+    
+  </a>
+</div>
+  <div id="search-autocomplete"></div>
+
+  <div class="" id="menu-trigger">
+    <svg aria-hidden="true" class="text-black" data-icon="bars" data-prefix="fas" focusable="false" height="24"
+      role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"
+        fill="currentColor"></path>
+    </svg>
+  </div>
+</header>
+      
+
+
+
+
+<div class="py-6 md:py-12 lg:w-10/12 md:text-center mx-auto">
+  
+  <div class="font-medium text-gray-700">08 August 2022</div>
+  
+  <h1 class="heading text-4xl md:text-6xl font-bold font-sans md:leading-tight">
+    Overview of the Go tooling
+  </h1>
+  
+  <h2 class="text-xl text-gray-600 mt-2">I'll show you some interesting Go tools that you can integrate into your project.</h2>
+  
+</div>
+
+
+  <div class="flex flex-col pb-3 md:hidden">
+    
+      
+
+
+
+<div class="flex items-center mb-3 last:mb-0">
+  
+    <img height="48" width="48" class="rounded-full border-white border-2" src="/assets/images/author/sidorenko-konstantin.jpg" alt="Sidorenko Konstantin"/>
+  
+  <div>
+    <span class="font-medium text-sm ml-1 block">Sidorenko Konstantin</span>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://www.twitter.com/"></a>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://github.com/thecampagnards">thecampagnards</a>
+  </div>
+</div>
+
+    
+  </div>
+
+
+
+
+<div class="flex flex-col md:flex-row py-6 md:py-12">
+
+  <div class="w-full md:w-3/12 pr-3">
+    
+      <div class="flex flex-col hidden md:flex mb-3 md:mb-6">
+        
+          
+
+
+
+<div class="flex items-center mb-3 last:mb-0">
+  
+    <img height="48" width="48" class="rounded-full border-white border-2" src="/assets/images/author/sidorenko-konstantin.jpg" alt="Sidorenko Konstantin"/>
+  
+  <div>
+    <span class="font-medium text-sm ml-1 block">Sidorenko Konstantin</span>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://www.twitter.com/"></a>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://github.com/thecampagnards">thecampagnards</a>
+  </div>
+</div>
+
+        
+      </div>
+    
+
+    
+      <div class="hidden md:block">
+        
+          <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/golang">Golang</a>
+        
+          <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/tool">Tool</a>
+        
+          <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/ci">CI</a>
+        
+      </div>
+    
+  </div>
+
+  <div class="w-full md:w-9/12">
+    <div class="prose post">
+      <h2 id="go-cli">Go CLI</h2>
+
+<p>I found a very complete post about the tooling of the <strong>go</strong> cli here <a href="https://www.alexedwards.net/blog/an-overview-of-go-tooling">https://www.alexedwards.net/blog/an-overview-of-go-tooling</a>.
+If you want to have more details I advise you to check it out.
+I am going to make a reminder of the comands that I use and recommend the most.</p>
+
+<p>I wrote this post at the version: <strong>1.18.5</strong></p>
+
+<h3 id="installing-go-packages">Installing Go Packages</h3>
+
+<p>Update from the blog I quoted above, <strong>go get</strong> is now deprecated to <strong>install packages locally</strong>, <a href="https://go.dev/doc/go-get-install-deprecation">https://go.dev/doc/go-get-install-deprecation</a>.</p>
+
+<p>Prefer to use <strong>go install</strong> :</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>go <span class="nb">install </span>github.com/golangci/golangci-lint/cmd/golangci-lint
+golangci-lint <span class="nt">-v</span>
+</code></pre></div></div>
+
+<h3 id="optimize-your-binary">Optimize your binary</h3>
+
+<p>In this part, I will show you how to optimize the size of your binary easily.</p>
+
+<p>In this case, I will use a simple example:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="s">"fmt"</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"optimize binary"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>I get these 2 results when I compile my application:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">-rwxr-xr-x</span> 1 ... ... 1762620 août   5 15:08 app1
+<span class="nt">-rwxr-xr-x</span> 1 ... ... 1183744 août   5 15:09 app2
+</code></pre></div></div>
+
+<p>As you can see app2 is <strong>~30% lighter</strong>!</p>
+
+<ul>
+  <li>
+    <p><strong>app1</strong> is built using:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>go build <span class="nt">-o</span> app1 <span class="nb">.</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>app2</strong> is built using optimizations:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">CGO_ENABLED</span><span class="o">=</span>0 go build <span class="nt">-a</span> <span class="nt">-ldflags</span> <span class="s2">"-s -w"</span> <span class="nt">-o</span> app2 <span class="nb">.</span>
+</code></pre></div>    </div>
+
+    <ul>
+      <li>
+        <p><strong>CGO_ENABLED=0</strong>, you got a <a href="https://en.wikipedia.org/wiki/Static_buildd">staticaly-linked binary</a> that will work without any external dependencies (you can use <strong>lighter docker images</strong> like <a href="https://hub.docker.com/_/scratch">scratch</a>).</p>
+      </li>
+      <li>
+        <p><strong>-ldflags “-s -w”</strong>, you can use the <a href="https://golang.org/cmd/link/">-s and -w linker</a> flags to strip the debugging information:</p>
+      </li>
+    </ul>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>go tool <span class="nb">link</span>
+...
+<span class="nt">-s</span>  disable symbol table
+...
+<span class="nt">-w</span>  disable DWARF generation
+...
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<div class="flex p-4 mb-4 bg-green-100 border-t-4 border-green-500 dark:bg-green-200" role="alert">
+  
+  <svg class="flex-shrink-0 w-5 h-5 text-green-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M 20 6.460938 C 20 11.457031 17.265625 15.652344 13.152344 17.011719 C 12.371094 17.320312 11.519531 17.5 10.625 17.5 C 8.089844 17.5 5.734375 16.070312 4.542969 13.808594 C 2.429688 15.757812 1.859375 17.988281 1.847656 18.03125 C 1.746094 18.460938 1.363281 18.75 0.9375 18.75 C 0.867188 18.75 0.792969 18.742188 0.71875 18.722656 C 0.214844 18.601562 -0.09375 18.097656 0.0273438 17.59375 C 0.402344 16.050781 3.558594 8.75 13.125 8.75 C 13.46875 8.75 13.75 8.46875 13.75 8.125 C 13.75 7.78125 13.46875 7.5 13.125 7.5 C 8.929688 7.5 5.898438 8.851562 3.761719 10.453125 C 3.769531 10.03125 3.808594 9.601562 3.898438 9.164062 C 4.425781 6.589844 6.480469 4.515625 9.03125 3.921875 C 10.140625 3.664062 11.207031 3.683594 12.195312 3.917969 C 14.382812 4.441406 16.8125 3.628906 18.027344 1.527344 C 18.246094 1.144531 18.808594 1.15625 18.988281 1.558594 C 19.636719 3 20 4.761719 20 6.460938 Z M 20 6.460938 " /></svg>
+  <div class="ml-3 text-sm font-medium text-green-700">
+    This is a must-have to put inside your <strong>CI</strong>!<br />If you want to go deeper to optimize your binary check <a href="https://upx.github.io/">upx</a>.
+  </div>
+</div>
+
+<h3 id="testing-deeper">Testing deeper</h3>
+
+<p>When handling goroutines quite a bit, feel free to run the tests with the Go <strong>race detector</strong> enabled, which can help detect some of the data races that can occur in real life. For example:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>go <span class="nb">test</span> <span class="nt">-race</span> ./...
+</code></pre></div></div>
+
+<h3 id="test-coverage-report">Test Coverage Report</h3>
+
+<p>Another interesting point is code coverage. You can enable <strong>coverage analysis</strong> when running tests by using the <strong>-coverprofile</strong> option. This will generate a <strong>coverage report</strong> that can be used by Sonarqube or others, like this:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>go <span class="nb">test</span> <span class="nt">-coverprofile</span><span class="o">=</span>profile.out ./...
+</code></pre></div></div>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    This is a must-have to run it in your <strong>CI</strong> especially if you have a code scanner that accepts this type of report!
+  </div>
+</div>
+
+<p>You can also view it in your web browser to see the <strong>coverage per file in detail</strong>, using the <strong>go tool cover -html</strong> command as follows:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>go tool cover <span class="nt">-html</span><span class="o">=</span>profile.out
+</code></pre></div></div>
+
+<h3 id="managing-your-dependencies">Managing your Dependencies</h3>
+
+<p>Before making any changes to your code, I recommend that you run the following commands to <strong>update</strong> your dependencies and get them in a <strong>tidy</strong> state:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>go get <span class="nt">-u</span> ./...
+go mod tidy
+</code></pre></div></div>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    When you start a development try to always keep your project up to date.
+  </div>
+</div>
+
+<p>The <strong>go get -u ./…</strong> command will <strong>update all dependencies</strong> at once for a given module, just run the following from the root directory of your module.</p>
+
+<p>The <strong>go mod tidy</strong> command will <strong>remove all unused dependencies</strong> from your <strong>go.mod</strong> and <strong>go.sum</strong> files, and update the files to include dependencies for all possible combinations of build/OS/architecture tags (note: go run, go test, go build etc. are ‘lazy’ and will only fetch the packages needed for the current build/OS/architecture tags). By doing this before each commit, it will be easier to determine which changes to your code are responsible for adding or removing which dependencies when you look at the version control history.</p>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    <strong>go mod tidy</strong> is a must-have to run and compare the changes in your <strong>CI</strong>!<br />
+You can check the differences using <strong>git diff --exit-code</strong>.
+  </div>
+</div>
+
+<h2 id="golangci-lint"><a href="https://golangci-lint.run/">Golangci-Lint</a></h2>
+
+<p><strong>Golangci-lint</strong> is a <strong>linting aggregator</strong> for Go that runs <strong>linters in parallel</strong>, reuses Go’s build cache, and caches analysis results to greatly improve performance on subsequent runs.</p>
+
+<p>This is the best way to implement linting in Go projects.</p>
+
+<p><img src="https://golangci-lint.run/demo.svg" alt="golangci-lint example" /></p>
+
+<p><strong>Golangci-lint</strong> is <a href="https://golangci-lint.run/usage/configuration/">configurable via yaml</a> which can allow you to <strong>version your rules</strong>. Try to use as <strong>many linters as possible</strong>, especially if you are <strong>starting in Go</strong>. This will help you to understand the good practices of this language.</p>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    This is a must-have to install in your <strong>CI</strong> !
+  </div>
+</div>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    If you want to enable it in your vscode, check <a href="https://golangci-lint.run/usage/integrations/#editor-integration">this documentation</a>.
+  </div>
+</div>
+
+<h2 id="references">References</h2>
+
+<p>Golangci-lint website: <a href="https://golangci-lint.run/">https://golangci-lint.run/</a><br />
+An Overview of Go’s Tooling: <a href="https://www.alexedwards.net/blog/an-overview-of-go-tooling">https://www.alexedwards.net/blog/an-overview-of-go-tooling</a><br />
+A go tooling cheat sheet: <a href="https://github.com/fedir/go-tooling-cheat-sheet/blob/master/go-tooling-cheat-sheet.pdf">https://github.com/fedir/go-tooling-cheat-sheet/blob/master/go-tooling-cheat-sheet.pdf</a></p>
+
+    </div>
+  </div>
+
+</div>
+
+
+  <div class="py-6 mt-6 border-t-2 block md:hidden">
+    <h3 class="text-sm font-medium mb-1">Categories</h3>
+    <div>
+      
+        <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/golang">Golang</a>
+      
+        <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/tool">Tool</a>
+      
+        <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/ci">CI</a>
+      
+    </div>
+  </div>
+
+
+
+<div id="disqus_thread"></div>
+<script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+
+    var disqus_config = function () {
+    this.page.url = "https://a-trick-a-day.github.io/blog/2022-08-08-golang-overview-of-the-go-tooling/";  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = "/blog/2022-08-08-golang-overview-of-the-go-tooling/"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://a-trick-a-day.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer class="py-6 border-t-2">
+  <div class="container mx-auto">
+    <div class="flex mb-2">
+      
+      <a class="py-2 mr-2" href="https://github.com/a-trick-a-day/a-trick-a-day.github.io"><img width="24" height="24" src="https://simpleicons.org/icons/github.svg" alt="Github" /></a>
+      
+    </div>
+    <div class="text-sm text-gray-600">
+      <span>Free Jekyll theme by</span>
+<a class="text-yellow-500" href="
+        https://www.zerostatic.io">Zerostatic Themes</a>
+    </div>
+</footer>
+    </div>
+    
+    
+    
+
+    <script type="text/javascript" src="/assets/js/hamburger.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch"></script>
+    <script type="text/javascript">
+      const { autocomplete, getAlgoliaResults } = window['@algolia/autocomplete-js'];
+      const searchClient = algoliasearch("8DJJ22AAKU", "5cd6440f030be29cec8c1d622bcca722")
+      autocomplete({
+        container: '#search-autocomplete',
+        placeholder: 'Search for posts',
+        getSources({ query }) {
+          return [
+            {
+              // sourceId: 'posts',
+              getItems() {
+                return getAlgoliaResults({
+                  searchClient,
+                  queries: [
+                    {
+                      indexName: 'posts',
+                      query,
+                      params: {
+                        hitsPerPage: 5,
+                        attributesToSnippet: ['name:10', 'description:35'],
+                        snippetEllipsisText: '…',
+                      },
+                    },
+                  ],
+                });
+              },
+              templates: {
+                item({ item, components, html }) {
+                  return html`<a class="aa-ItemWrapper" href="/${item.url.substring(1)}">
+                    <div class="aa-ItemContent">
+                      ${item.thumbnail ? html`<div class="aa-ItemIcon aa-ItemIcon--alignTop">
+                        <img
+                          src="/${item.thumbnail}"
+                          alt="${item.title}"
+                          width="40"
+                          height="40"
+                        />
+                      </div>` : ""}
+                      <div class="aa-ItemContentBody">
+                        <div class="aa-ItemContentTitle">
+                          ${components.Highlight({ hit: item, attribute: 'title' })}
+                        </div>
+                        <div class="aa-ItemContentDescription">
+                          ${item.authors ? html`By <strong>${item.authors[0]}</strong> in ${' '}` : ""}
+                          ${item.categories ? html`<strong>${item.categories[0]}</strong>` : ""}
+                        </div>
+                      </div>
+                    </div>
+                  </a>`;
+                },
+              },
+            },
+          ];
+        },
+        render({ children, render, html }, root) {
+          render(html`<div class="aa-SomeResults">${children}</div>`, root);
+        },
+        renderNoResults({ children, render, html }, root) {
+          render(html`<div class="aa-NoResults"><div class="aa-PanelLayout aa-Panel--scrollable">No posts found</div></div>`, root);
+        },
+      });
+    </script>
+  </body>
+</html>

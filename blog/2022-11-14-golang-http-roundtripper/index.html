@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <title>
+  
+    HTTP RoundTripper
+    -
+    A Trick A Day
+  
+</title>
+
+
+  <meta name="description" content="The basics of Go HTTP Transport & RoundTripper."/>
+
+
+<meta property="og:title" content="HTTP RoundTripper"/>
+
+<meta content="website" property="og:type"/>
+<meta property="og:url" content="/blog/2022-11-14-golang-http-roundtripper/"/>
+
+<meta property="og:description" content="The basics of Go HTTP Transport & RoundTripper."/>
+
+<meta content="summary" name="twitter:card"/>
+
+
+
+    <link rel="icon" href="/assets/images/logo/logo.svg" sizes="any" type="image/svg+xml">
+    <link href="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-theme-classic@1/dist/theme.min.css" rel="stylesheet"/>
+    <link href="/assets/css/style.css" rel="stylesheet">
+  </head>
+  <body class="page ">
+    <div id="menu-container"
+  class=" bg-red-600 h-screen w-screen fixed z-50 p-8 flex-col items-center justify-around bg-gradient-to-b from-yellow-400 to-red-800 opacity-90 overflow-hidden hidden">
+  <div id="menu-close" class="top-7 right-7 absolute">
+    <svg aria-hidden="true" focusable="false" class="h-6 text-white" role="img" xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 352 512">
+      <path fill="currentColor"
+        d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
+      </path>
+    </svg>
+  </div>
+  <div class="flex flex-col text-center text-white text-2xl font-bold">
+    
+    <a class="py-2" href="/a-trick-a-day/">Home</a>
+    
+    <a class="py-2" href="/a-trick-a-day/blog/">Blog</a>
+    
+    <a class="py-2" href="/a-trick-a-day/about/">About</a>
+    
+    <a class="py-2" href="/a-trick-a-day/category/golang">Golang</a>
+    
+  </div>
+</div>
+    <div class="container mx-auto px-6 md:px-4">
+      
+        
+        
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    
+        If you like this blog and want to contribute, read <a href="/blog/2022-08-09-blog-how-to-contibute/" class="underline">this post</a>.
+        
+  </div>
+</div>
+      
+      <header class="flex items-center justify-between py-6">
+  <div class="logo hidden md:block">
+  <a class="flex items-center hover:opacity-70 transition duration-300 ease-in-out" href="/">
+    
+    <img class="mr-2" height="36px" width="36px"
+      alt="A Trick A Day Logo" src="/assets/images/logo/logo.svg" />
+    
+    
+    <h2 class="text-2xl font-sans font-semibold">A Trick <strong>A Day</strong></h2>
+    
+  </a>
+</div>
+<div class="logo-mobile block md:hidden">
+  <a class="flex items-center hover:opacity-70 transition duration-300 ease-in-out" href="/">
+    
+    <img height="36px" width="36px"
+      alt="A Trick A Day Logo" src="/assets/images/logo/logo.svg" />
+    
+    
+    <h2 class="text-2xl font-sans font-semibold"></h2>
+    
+  </a>
+</div>
+  <div id="search-autocomplete"></div>
+
+  <div class="" id="menu-trigger">
+    <svg aria-hidden="true" class="text-black" data-icon="bars" data-prefix="fas" focusable="false" height="24"
+      role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"
+        fill="currentColor"></path>
+    </svg>
+  </div>
+</header>
+      
+
+
+
+
+<div class="py-6 md:py-12 lg:w-10/12 md:text-center mx-auto">
+  
+  <div class="font-medium text-gray-700">14 November 2022</div>
+  
+  <h1 class="heading text-4xl md:text-6xl font-bold font-sans md:leading-tight">
+    HTTP RoundTripper
+  </h1>
+  
+  <h2 class="text-xl text-gray-600 mt-2">The basics of Go HTTP Transport & RoundTripper.</h2>
+  
+</div>
+
+
+  <div class="flex flex-col pb-3 md:hidden">
+    
+      
+
+
+
+<div class="flex items-center mb-3 last:mb-0">
+  
+    <img height="48" width="48" class="rounded-full border-white border-2" src="/assets/images/author/sidorenko-konstantin.jpg" alt="Sidorenko Konstantin"/>
+  
+  <div>
+    <span class="font-medium text-sm ml-1 block">Sidorenko Konstantin</span>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://www.twitter.com/"></a>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://github.com/thecampagnards">thecampagnards</a>
+  </div>
+</div>
+
+    
+  </div>
+
+
+
+
+<div class="flex flex-col md:flex-row py-6 md:py-12">
+
+  <div class="w-full md:w-3/12 pr-3">
+    
+      <div class="flex flex-col hidden md:flex mb-3 md:mb-6">
+        
+          
+
+
+
+<div class="flex items-center mb-3 last:mb-0">
+  
+    <img height="48" width="48" class="rounded-full border-white border-2" src="/assets/images/author/sidorenko-konstantin.jpg" alt="Sidorenko Konstantin"/>
+  
+  <div>
+    <span class="font-medium text-sm ml-1 block">Sidorenko Konstantin</span>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://www.twitter.com/"></a>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://github.com/thecampagnards">thecampagnards</a>
+  </div>
+</div>
+
+        
+      </div>
+    
+
+    
+      <div class="hidden md:block">
+        
+          <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/golang">Golang</a>
+        
+          <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/development">Development</a>
+        
+      </div>
+    
+  </div>
+
+  <div class="w-full md:w-9/12">
+    <div class="prose post">
+      <p>In this article, I will discuss what is <strong>Round tripping</strong> in Go, its use cases and different application examples.</p>
+
+<p>From the <a href="https://pkg.go.dev/net/http#RoundTripper">Go doc</a>:</p>
+
+<pre><code class="language-txt">RoundTripper is an interface representing the ability to execute a single HTTP transaction,
+obtaining the Response for a given Request.
+</code></pre>
+
+<p>Basically, it means that you can <strong>get into</strong> what happens between an <strong>HTTP request</strong> and the receipt of a <strong>response</strong>. In simple terms, it’s <strong>like “middleware”</strong> but for an <strong>http client</strong>.</p>
+
+<p>Since <a href="https://pkg.go.dev/net/http#RoundTripper">http.RoundTripper</a> is an interface.
+All you have to do to get this functionality is to <strong>implement RoundTrip</strong>:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">MyFirstRoundTripper</span> <span class="k">struct</span> <span class="p">{}</span>
+
+<span class="k">func</span> <span class="p">(</span><span class="n">m</span> <span class="o">*</span><span class="n">MyFirstRoundTripper</span><span class="p">)</span> <span class="n">RoundTrip</span><span class="p">(</span><span class="n">r</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">)(</span><span class="o">*</span><span class="n">Response</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c">// wouhou I did my first round tripper</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>And <strong>use it as transport</strong> at the <strong>http.Client</strong> level.</p>
+
+<p>Usecases:</p>
+
+<ul>
+  <li>Caching http responses</li>
+  <li>Adding appropriate (authorization) headers to the request</li>
+  <li>Rate limiting</li>
+  <li>Logging</li>
+  <li>Metrics</li>
+  <li>Monitoring</li>
+  <li>Everything</li>
+</ul>
+
+<h2 id="my-first-roundtripper">My first RoundTripper</h2>
+
+<p>In this part we will make a simple <a href="https://pkg.go.dev/net/http#RoundTripper">RoundTripper</a> that <strong>allows us to add a header</strong>.</p>
+
+<p>I took this example because it shows how to <strong>pass variables</strong> to its <a href="https://pkg.go.dev/net/http#RoundTripper">RoundTripper</a>:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"encoding/base64"</span>
+	<span class="s">"fmt"</span>
+	<span class="s">"net/http"</span>
+<span class="p">)</span>
+
+<span class="k">type</span> <span class="n">BasicAuthTransport</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">Password</span> <span class="kt">string</span>
+	<span class="n">Username</span> <span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="p">(</span><span class="n">b</span> <span class="n">BasicAuthTransport</span><span class="p">)</span> <span class="n">RoundTrip</span><span class="p">(</span><span class="n">req</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="s">"Authorization"</span><span class="p">,</span> <span class="n">fmt</span><span class="o">.</span><span class="n">Sprint</span><span class="p">(</span><span class="s">"Basic "</span><span class="p">,</span>
+		<span class="n">base64</span><span class="o">.</span><span class="n">StdEncoding</span><span class="o">.</span><span class="n">EncodeToString</span><span class="p">([]</span><span class="kt">byte</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">Sprint</span><span class="p">(</span>
+			<span class="n">b</span><span class="o">.</span><span class="n">Username</span><span class="p">,</span> <span class="s">":"</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">Password</span><span class="p">)))))</span>
+	<span class="k">return</span> <span class="n">http</span><span class="o">.</span><span class="n">DefaultTransport</span><span class="o">.</span><span class="n">RoundTrip</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">client</span> <span class="o">:=</span> <span class="n">http</span><span class="o">.</span><span class="n">Client</span><span class="p">{</span>
+		<span class="n">Transport</span><span class="o">:</span> <span class="n">BasicAuthTransport</span><span class="p">{</span>
+			<span class="n">Username</span><span class="o">:</span> <span class="s">"a-trick"</span><span class="p">,</span>
+			<span class="n">Password</span><span class="o">:</span> <span class="s">"a-day"</span><span class="p">,</span>
+		<span class="p">},</span>
+	<span class="p">}</span>
+	<span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s">"http://a-trick-a-day.github.io/"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Thanks to this <strong>all the requests</strong> made with the <strong>client</strong> will <strong>have this header</strong>.</p>
+
+<p>All the “configuration” of our requests will be done at the <strong>client level</strong> so you <strong>don’t have to share</strong> all <strong>this configuration</strong> and <strong>only share the client</strong>.</p>
+
+<h2 id="nested-rountripper">Nested Rountripper</h2>
+
+<p>In this part, we will see how to <strong>nest several <a href="https://pkg.go.dev/net/http#RoundTripper">RoundTripper</a></strong>:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">LogTransport</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">Level</span>               <span class="kt">string</span>
+	<span class="n">DefaultRoundTripper</span> <span class="n">http</span><span class="o">.</span><span class="n">RoundTripper</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="p">(</span><span class="n">l</span> <span class="n">LogTransport</span><span class="p">)</span> <span class="n">RoundTrip</span><span class="p">(</span><span class="n">req</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">log</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"level:"</span><span class="p">,</span> <span class="n">l</span><span class="o">.</span><span class="n">Level</span><span class="p">,</span> <span class="s">" - request: "</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">URL</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">l</span><span class="o">.</span><span class="n">DefaultRoundTripper</span><span class="o">.</span><span class="n">RoundTrip</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">client</span> <span class="o">:=</span> <span class="n">http</span><span class="o">.</span><span class="n">Client</span><span class="p">{</span>
+		<span class="c">// to avoid to be spam by the redirection for the demo</span>
+		<span class="n">CheckRedirect</span><span class="o">:</span> <span class="k">func</span><span class="p">(</span><span class="n">req</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="n">via</span> <span class="p">[]</span><span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="n">http</span><span class="o">.</span><span class="n">ErrUseLastResponse</span>
+		<span class="p">},</span>
+		<span class="n">Transport</span><span class="o">:</span> <span class="n">LogTransport</span><span class="p">{</span>
+			<span class="n">Level</span><span class="o">:</span> <span class="s">"INFO"</span><span class="p">,</span>
+			<span class="n">DefaultRoundTripper</span><span class="o">:</span> <span class="n">BasicAuthTransport</span><span class="p">{</span>
+				<span class="n">Username</span><span class="o">:</span> <span class="s">"a-trick"</span><span class="p">,</span>
+				<span class="n">Password</span><span class="o">:</span> <span class="s">"a-day"</span><span class="p">,</span>
+			<span class="p">},</span>
+		<span class="p">},</span>
+	<span class="p">}</span>
+	<span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s">"http://a-trick-a-day.github.io/"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Ouput:</p>
+
+<pre><code class="language-txt">2022/11/08 14:27:26 level: {INFO {a-trick a-day}}  - request:  http://a-trick-a-day.github.io/
+</code></pre>
+
+<p>As you can see, you need to have a <strong>field in your RoundTripper structure</strong> that <strong>contains</strong> the <strong>RoundTripper to inherit</strong>.</p>
+
+<div id="alert-border-4" class="flex p-4 mb-4 bg-yellow-100 border-t-4 border-yellow-500 dark:bg-yellow-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-yellow-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-yellow-700">
+    Pay attention to the execution order!
+  </div>
+</div>
+
+<h2 id="response-roundtripper">Response RoundTripper</h2>
+
+<p>Here we will see how to use <a href="https://pkg.go.dev/net/http#RoundTripper">RoundTripper</a> to <strong>manipulate the response</strong>:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">PostRequestTransport</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">DefaultRoundTripper</span> <span class="n">http</span><span class="o">.</span><span class="n">RoundTripper</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="n">PostRequestTransport</span><span class="p">)</span> <span class="n">RoundTrip</span><span class="p">(</span><span class="n">req</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c">// execute the round trip to get the response</span>
+	<span class="n">resp</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span>  <span class="n">p</span><span class="o">.</span><span class="n">DefaultRoundTripper</span><span class="o">.</span><span class="n">RoundTrip</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+	<span class="n">log</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"resp:"</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">Header</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">resp</span><span class="p">,</span> <span class="n">err</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">client</span> <span class="o">:=</span> <span class="n">http</span><span class="o">.</span><span class="n">Client</span><span class="p">{</span>
+		<span class="c">// to avoid to be spam by the redirection for the demo</span>
+		<span class="n">CheckRedirect</span><span class="o">:</span> <span class="k">func</span><span class="p">(</span><span class="n">req</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="n">via</span> <span class="p">[]</span><span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="n">http</span><span class="o">.</span><span class="n">ErrUseLastResponse</span>
+		<span class="p">},</span>
+		<span class="n">Transport</span><span class="o">:</span>  <span class="n">PostRequestTransport</span><span class="p">{</span>
+			<span class="n">DefaultRoundTripper</span><span class="o">:</span> <span class="n">LogTransport</span><span class="p">{</span>
+				<span class="n">Level</span><span class="o">:</span> <span class="s">"INFO"</span><span class="p">,</span>
+				<span class="n">DefaultRoundTripper</span><span class="o">:</span> <span class="n">BasicAuthTransport</span><span class="p">{</span>
+					<span class="n">Username</span><span class="o">:</span> <span class="s">"a-trick"</span><span class="p">,</span>
+					<span class="n">Password</span><span class="o">:</span> <span class="s">"a-day"</span><span class="p">,</span>
+				<span class="p">},</span>
+			<span class="p">},</span>
+		<span class="p">},</span>
+	<span class="p">}</span>
+	<span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s">"http://a-trick-a-day.github.io/"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<pre><code class="language-txt">2022/11/08 14:27:26 level: {INFO {a-trick a-day}}  - request:  http://a-trick-a-day.github.io/
+2022/11/08 14:27:26 resp: map[Accept-Ranges:[bytes] Age:[148] Connection:[keep-alive] Content-Length:[162] Content-Type:[text/html] Date:[Tue, 08 Nov 2022 14:27:26 GMT] Location:[https://a-trick-a-day.github.io/] Permissions-Policy:[interest-cohort=()] Server:[GitHub.com] Vary:[Accept-Encoding] Via:[1.1 varnish] X-Cache:[HIT] X-Cache-Hits:[1] X-Fastly-Request-Id:[ee289dfdb0c0400e8f0a1fafa8a6712c7fbae831] X-Github-Request-Id:[6148:1350C:A0FFBE:A5A5B6:636A66BA] X-Served-By:[cache-cdg20744-CDG] X-Timer:[S1667917647.738975,VS0,VE1]]
+</code></pre>
+
+<p>In <strong>this use case</strong> you can <strong>implement</strong> for example <strong>cache the response</strong>, <strong>retrieve telemetry headers</strong> etc.</p>
+
+<h2 id="resume">Resume</h2>
+
+<p>Here is the final version with the <strong>different ways</strong> to use the <a href="https://pkg.go.dev/net/http#RoundTripper">RoundTripper</a>, if you have <strong>others implementations do not hesitate to share</strong> them with me so I can update this post:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"encoding/base64"</span>
+	<span class="s">"fmt"</span>
+	<span class="s">"log"</span>
+	<span class="s">"net/http"</span>
+<span class="p">)</span>
+
+<span class="k">type</span> <span class="n">BasicAuthTransport</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">Password</span> <span class="kt">string</span>
+	<span class="n">Username</span> <span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="p">(</span><span class="n">b</span> <span class="n">BasicAuthTransport</span><span class="p">)</span> <span class="n">RoundTrip</span><span class="p">(</span><span class="n">req</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="s">"Authorization"</span><span class="p">,</span> <span class="n">fmt</span><span class="o">.</span><span class="n">Sprint</span><span class="p">(</span><span class="s">"Basic "</span><span class="p">,</span>
+		<span class="n">base64</span><span class="o">.</span><span class="n">StdEncoding</span><span class="o">.</span><span class="n">EncodeToString</span><span class="p">([]</span><span class="kt">byte</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">Sprint</span><span class="p">(</span>
+			<span class="n">b</span><span class="o">.</span><span class="n">Username</span><span class="p">,</span> <span class="s">":"</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">Password</span><span class="p">)))))</span>
+	<span class="k">return</span> <span class="n">http</span><span class="o">.</span><span class="n">DefaultTransport</span><span class="o">.</span><span class="n">RoundTrip</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">type</span> <span class="n">LogTransport</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">Level</span>               <span class="kt">string</span>
+	<span class="n">DefaultRoundTripper</span> <span class="n">http</span><span class="o">.</span><span class="n">RoundTripper</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="p">(</span><span class="n">l</span> <span class="n">LogTransport</span><span class="p">)</span> <span class="n">RoundTrip</span><span class="p">(</span><span class="n">req</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">log</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"level:"</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="s">" - request: "</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">URL</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">l</span><span class="o">.</span><span class="n">DefaultRoundTripper</span><span class="o">.</span><span class="n">RoundTrip</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">type</span> <span class="n">PostRequestTransport</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">DefaultRoundTripper</span> <span class="n">http</span><span class="o">.</span><span class="n">RoundTripper</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="n">PostRequestTransport</span><span class="p">)</span> <span class="n">RoundTrip</span><span class="p">(</span><span class="n">req</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">resp</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">p</span><span class="o">.</span><span class="n">DefaultRoundTripper</span><span class="o">.</span><span class="n">RoundTrip</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+	<span class="n">log</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"resp:"</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">Header</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">resp</span><span class="p">,</span> <span class="n">err</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">client</span> <span class="o">:=</span> <span class="n">http</span><span class="o">.</span><span class="n">Client</span><span class="p">{</span>
+		<span class="c">// to avoid to be spam by the redirection for the demo</span>
+		<span class="n">CheckRedirect</span><span class="o">:</span> <span class="k">func</span><span class="p">(</span><span class="n">req</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="n">via</span> <span class="p">[]</span><span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="n">http</span><span class="o">.</span><span class="n">ErrUseLastResponse</span>
+		<span class="p">},</span>
+		<span class="n">Transport</span><span class="o">:</span> <span class="n">PostRequestTransport</span><span class="p">{</span>
+			<span class="n">DefaultRoundTripper</span><span class="o">:</span> <span class="n">LogTransport</span><span class="p">{</span>
+				<span class="n">Level</span><span class="o">:</span> <span class="s">"INFO"</span><span class="p">,</span>
+				<span class="n">DefaultRoundTripper</span><span class="o">:</span> <span class="n">BasicAuthTransport</span><span class="p">{</span>
+					<span class="n">Username</span><span class="o">:</span> <span class="s">"a-trick"</span><span class="p">,</span>
+					<span class="n">Password</span><span class="o">:</span> <span class="s">"a-day"</span><span class="p">,</span>
+				<span class="p">},</span>
+			<span class="p">},</span>
+		<span class="p">},</span>
+	<span class="p">}</span>
+	<span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s">"http://a-trick-a-day.github.io/"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Go playground: <a href="https://go.dev/play/p/s6Kt1FgylE-">https://go.dev/play/p/s6Kt1FgylE-</a>. (You can’t test directly from the go playground because HTTP requests are blocked)</p>
+
+<p>Now <strong>you know the basics</strong> of <a href="https://pkg.go.dev/net/http#RoundTripper">RoundTripper</a>!</p>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    If you need a <strong>simple rest client</strong> don’t hesitate to look at <a href="https://github.com/go-resty/resty">resty</a>.
+  </div>
+</div>
+
+<h2 id="references">References</h2>
+
+<p><a href="https://lanre.wtf/blog/2017/07/24/roundtripper-go/">https://lanre.wtf/blog/2017/07/24/roundtripper-go/</a></p>
+
+    </div>
+  </div>
+
+</div>
+
+
+  <div class="py-6 mt-6 border-t-2 block md:hidden">
+    <h3 class="text-sm font-medium mb-1">Categories</h3>
+    <div>
+      
+        <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/golang">Golang</a>
+      
+        <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/development">Development</a>
+      
+    </div>
+  </div>
+
+
+
+<div id="disqus_thread"></div>
+<script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+
+    var disqus_config = function () {
+    this.page.url = "https://a-trick-a-day.github.io/blog/2022-11-14-golang-http-roundtripper/";  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = "/blog/2022-11-14-golang-http-roundtripper/"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://a-trick-a-day.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer class="py-6 border-t-2">
+  <div class="container mx-auto">
+    <div class="flex mb-2">
+      
+      <a class="py-2 mr-2" href="https://github.com/a-trick-a-day/a-trick-a-day.github.io"><img width="24" height="24" src="https://simpleicons.org/icons/github.svg" alt="Github" /></a>
+      
+    </div>
+    <div class="text-sm text-gray-600">
+      <span>Free Jekyll theme by</span>
+<a class="text-yellow-500" href="
+        https://www.zerostatic.io">Zerostatic Themes</a>
+    </div>
+</footer>
+    </div>
+    
+    
+    
+
+    <script type="text/javascript" src="/assets/js/hamburger.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch"></script>
+    <script type="text/javascript">
+      const { autocomplete, getAlgoliaResults } = window['@algolia/autocomplete-js'];
+      const searchClient = algoliasearch("8DJJ22AAKU", "5cd6440f030be29cec8c1d622bcca722")
+      autocomplete({
+        container: '#search-autocomplete',
+        placeholder: 'Search for posts',
+        getSources({ query }) {
+          return [
+            {
+              // sourceId: 'posts',
+              getItems() {
+                return getAlgoliaResults({
+                  searchClient,
+                  queries: [
+                    {
+                      indexName: 'posts',
+                      query,
+                      params: {
+                        hitsPerPage: 5,
+                        attributesToSnippet: ['name:10', 'description:35'],
+                        snippetEllipsisText: '…',
+                      },
+                    },
+                  ],
+                });
+              },
+              templates: {
+                item({ item, components, html }) {
+                  return html`<a class="aa-ItemWrapper" href="/${item.url.substring(1)}">
+                    <div class="aa-ItemContent">
+                      ${item.thumbnail ? html`<div class="aa-ItemIcon aa-ItemIcon--alignTop">
+                        <img
+                          src="/${item.thumbnail}"
+                          alt="${item.title}"
+                          width="40"
+                          height="40"
+                        />
+                      </div>` : ""}
+                      <div class="aa-ItemContentBody">
+                        <div class="aa-ItemContentTitle">
+                          ${components.Highlight({ hit: item, attribute: 'title' })}
+                        </div>
+                        <div class="aa-ItemContentDescription">
+                          ${item.authors ? html`By <strong>${item.authors[0]}</strong> in ${' '}` : ""}
+                          ${item.categories ? html`<strong>${item.categories[0]}</strong>` : ""}
+                        </div>
+                      </div>
+                    </div>
+                  </a>`;
+                },
+              },
+            },
+          ];
+        },
+        render({ children, render, html }, root) {
+          render(html`<div class="aa-SomeResults">${children}</div>`, root);
+        },
+        renderNoResults({ children, render, html }, root) {
+          render(html`<div class="aa-NoResults"><div class="aa-PanelLayout aa-Panel--scrollable">No posts found</div></div>`, root);
+        },
+      });
+    </script>
+  </body>
+</html>
