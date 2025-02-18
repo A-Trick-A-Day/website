@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <title>
+  
+    Function in Function
+    -
+    A Trick A Day
+  
+</title>
+
+
+  <meta name="description" content="Need to pass more parameters to a function type parameter, you will know everything at the end."/>
+
+
+<meta property="og:title" content="Function in Function"/>
+
+<meta content="website" property="og:type"/>
+<meta property="og:url" content="/blog/2022-08-11-golang-function-in-function/"/>
+
+<meta property="og:description" content="Need to pass more parameters to a function type parameter, you will know everything at the end."/>
+
+<meta content="summary" name="twitter:card"/>
+
+
+
+    <link rel="icon" href="/assets/images/logo/logo.svg" sizes="any" type="image/svg+xml">
+    <link href="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-theme-classic@1/dist/theme.min.css" rel="stylesheet"/>
+    <link href="/assets/css/style.css" rel="stylesheet">
+  </head>
+  <body class="page ">
+    <div id="menu-container"
+  class=" bg-red-600 h-screen w-screen fixed z-50 p-8 flex-col items-center justify-around bg-gradient-to-b from-yellow-400 to-red-800 opacity-90 overflow-hidden hidden">
+  <div id="menu-close" class="top-7 right-7 absolute">
+    <svg aria-hidden="true" focusable="false" class="h-6 text-white" role="img" xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 352 512">
+      <path fill="currentColor"
+        d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
+      </path>
+    </svg>
+  </div>
+  <div class="flex flex-col text-center text-white text-2xl font-bold">
+    
+    <a class="py-2" href="/a-trick-a-day/">Home</a>
+    
+    <a class="py-2" href="/a-trick-a-day/blog/">Blog</a>
+    
+    <a class="py-2" href="/a-trick-a-day/about/">About</a>
+    
+    <a class="py-2" href="/a-trick-a-day/category/golang">Golang</a>
+    
+  </div>
+</div>
+    <div class="container mx-auto px-6 md:px-4">
+      
+        
+        
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    
+        If you like this blog and want to contribute, read <a href="/blog/2022-08-09-blog-how-to-contibute/" class="underline">this post</a>.
+        
+  </div>
+</div>
+      
+      <header class="flex items-center justify-between py-6">
+  <div class="logo hidden md:block">
+  <a class="flex items-center hover:opacity-70 transition duration-300 ease-in-out" href="/">
+    
+    <img class="mr-2" height="36px" width="36px"
+      alt="A Trick A Day Logo" src="/assets/images/logo/logo.svg" />
+    
+    
+    <h2 class="text-2xl font-sans font-semibold">A Trick <strong>A Day</strong></h2>
+    
+  </a>
+</div>
+<div class="logo-mobile block md:hidden">
+  <a class="flex items-center hover:opacity-70 transition duration-300 ease-in-out" href="/">
+    
+    <img height="36px" width="36px"
+      alt="A Trick A Day Logo" src="/assets/images/logo/logo.svg" />
+    
+    
+    <h2 class="text-2xl font-sans font-semibold"></h2>
+    
+  </a>
+</div>
+  <div id="search-autocomplete"></div>
+
+  <div class="" id="menu-trigger">
+    <svg aria-hidden="true" class="text-black" data-icon="bars" data-prefix="fas" focusable="false" height="24"
+      role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"
+        fill="currentColor"></path>
+    </svg>
+  </div>
+</header>
+      
+
+
+
+
+<div class="py-6 md:py-12 lg:w-10/12 md:text-center mx-auto">
+  
+  <div class="font-medium text-gray-700">11 August 2022</div>
+  
+  <h1 class="heading text-4xl md:text-6xl font-bold font-sans md:leading-tight">
+    Function in Function
+  </h1>
+  
+  <h2 class="text-xl text-gray-600 mt-2">Need to pass more parameters to a function type parameter, you will know everything at the end.</h2>
+  
+</div>
+
+
+  <div class="flex flex-col pb-3 md:hidden">
+    
+      
+
+
+
+<div class="flex items-center mb-3 last:mb-0">
+  
+    <img height="48" width="48" class="rounded-full border-white border-2" src="/assets/images/author/sidorenko-konstantin.jpg" alt="Sidorenko Konstantin"/>
+  
+  <div>
+    <span class="font-medium text-sm ml-1 block">Sidorenko Konstantin</span>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://www.twitter.com/"></a>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://github.com/thecampagnards">thecampagnards</a>
+  </div>
+</div>
+
+    
+  </div>
+
+
+
+
+<div class="flex flex-col md:flex-row py-6 md:py-12">
+
+  <div class="w-full md:w-3/12 pr-3">
+    
+      <div class="flex flex-col hidden md:flex mb-3 md:mb-6">
+        
+          
+
+
+
+<div class="flex items-center mb-3 last:mb-0">
+  
+    <img height="48" width="48" class="rounded-full border-white border-2" src="/assets/images/author/sidorenko-konstantin.jpg" alt="Sidorenko Konstantin"/>
+  
+  <div>
+    <span class="font-medium text-sm ml-1 block">Sidorenko Konstantin</span>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://www.twitter.com/"></a>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://github.com/thecampagnards">thecampagnards</a>
+  </div>
+</div>
+
+        
+      </div>
+    
+
+    
+      <div class="hidden md:block">
+        
+          <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/golang">Golang</a>
+        
+          <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/development">Development</a>
+        
+      </div>
+    
+  </div>
+
+  <div class="w-full md:w-9/12">
+    <div class="prose post">
+      <p>When we do API configuration we often find ourselves having to <strong>pass functions in parameters</strong>.
+For example <strong>http.HandleFunc</strong> need a function in second parameter:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">http</span><span class="o">.</span><span class="n">HandleFunc</span><span class="p">(</span><span class="n">pattern</span> <span class="kt">string</span><span class="p">,</span> <span class="n">handler</span> <span class="k">func</span><span class="p">(</span><span class="n">http</span><span class="o">.</span><span class="n">ResponseWriter</span><span class="p">,</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>But you would like to be able to <strong>pass an additional parameter</strong> or you would like to <strong>extend this function</strong>.</p>
+
+<p>Here is an example:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"log"</span>
+	<span class="s">"net/http"</span>
+<span class="p">)</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">http</span><span class="o">.</span><span class="n">HandleFunc</span><span class="p">(</span><span class="s">"/hello"</span><span class="p">,</span> <span class="n">middlewareOne</span><span class="p">(</span><span class="s">"hello"</span><span class="p">,</span> <span class="n">http</span><span class="o">.</span><span class="n">HandlerFunc</span><span class="p">(</span><span class="n">hello</span><span class="p">)))</span>
+	<span class="n">http</span><span class="o">.</span><span class="n">HandleFunc</span><span class="p">(</span><span class="s">"/headers"</span><span class="p">,</span> <span class="n">middlewareOne</span><span class="p">(</span><span class="s">"headers"</span><span class="p">,</span> <span class="n">http</span><span class="o">.</span><span class="n">HandlerFunc</span><span class="p">(</span><span class="n">headers</span><span class="p">)))</span>
+
+	<span class="n">http</span><span class="o">.</span><span class="n">ListenAndServe</span><span class="p">(</span><span class="s">":8080"</span><span class="p">,</span> <span class="no">nil</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">middlewareOne</span><span class="p">(</span><span class="n">value</span> <span class="kt">string</span><span class="p">,</span> <span class="n">next</span> <span class="n">http</span><span class="o">.</span><span class="n">Handler</span><span class="p">)</span> <span class="k">func</span><span class="p">(</span><span class="n">http</span><span class="o">.</span><span class="n">ResponseWriter</span><span class="p">,</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="k">func</span><span class="p">(</span><span class="n">w</span> <span class="n">http</span><span class="o">.</span><span class="n">ResponseWriter</span><span class="p">,</span> <span class="n">r</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">log</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"Executing middlewareOne: %s"</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+		<span class="n">next</span><span class="o">.</span><span class="n">ServeHTTP</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">hello</span><span class="p">(</span><span class="n">w</span> <span class="n">http</span><span class="o">.</span><span class="n">ResponseWriter</span><span class="p">,</span> <span class="n">r</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">log</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="s">"Executing hello"</span><span class="p">)</span>
+	<span class="n">w</span><span class="o">.</span><span class="n">Write</span><span class="p">([]</span><span class="kt">byte</span><span class="p">(</span><span class="s">"OK"</span><span class="p">))</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">headers</span><span class="p">(</span><span class="n">w</span> <span class="n">http</span><span class="o">.</span><span class="n">ResponseWriter</span><span class="p">,</span> <span class="n">r</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">log</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="s">"Executing headers"</span><span class="p">)</span>
+	<span class="n">w</span><span class="o">.</span><span class="n">Write</span><span class="p">([]</span><span class="kt">byte</span><span class="p">(</span><span class="s">"OK"</span><span class="p">))</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Go playground: <a href="https://go.dev/play/p/NsXH7pH085X">https://go.dev/play/p/NsXH7pH085X</a>.</p>
+
+<p><strong>middlewareOne</strong> allows us to log a message at each HTTP request and <strong>takes as input a new parameter</strong> that was not accepted by <strong>http.HandleFunc</strong>.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>go run <span class="nb">.</span>
+<span class="go">2022/08/10 11:40:45 Executing middlewareOne: hello
+2022/08/10 11:40:45 Executing hello
+2022/08/10 11:41:05 Executing middlewareOne: headers
+2022/08/10 11:41:05 Executing headers
+</span></code></pre></div></div>
+
+<p>For <strong>most of the HTTP libraries</strong>, when you will have to <strong>develop middleware</strong> you will have to do it this way, thanks to this trick you will be <strong>able to pass additional configuration parameters</strong> like the configuration of your logger or your opentelemetry lib etc.</p>
+
+<p>Check <a href="https://github.com/justinas/alice">https://github.com/justinas/alice</a>, that can help you to <strong>chain your HTTP middlewares</strong>.</p>
+
+<p>We can take <strong>another case</strong> that can happen more often.
+Let’s say you want to <strong>loop</strong> over an <strong>interfaced function slice</strong>, but the interface <strong>prevents</strong> you from <strong>passing parameters</strong>.
+You can do it like this:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="s">"fmt"</span>
+
+<span class="k">type</span> <span class="n">Task</span> <span class="k">func</span><span class="p">()</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">defaultTask</span> <span class="o">:=</span> <span class="k">func</span><span class="p">(</span><span class="n">id</span> <span class="kt">string</span><span class="p">)</span> <span class="n">Task</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="k">func</span><span class="p">()</span> <span class="p">{</span>
+			<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="n">tasks</span> <span class="o">:=</span> <span class="p">[]</span><span class="n">Task</span><span class="p">{</span>
+		<span class="k">func</span><span class="p">()</span> <span class="p">{</span>
+			<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"1"</span><span class="p">)</span>
+		<span class="p">},</span>
+		<span class="n">defaultTask</span><span class="p">(</span><span class="s">"2"</span><span class="p">),</span>
+		<span class="n">defaultTask</span><span class="p">(</span><span class="s">"3"</span><span class="p">),</span>
+	<span class="p">}</span>
+	<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">t</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">tasks</span> <span class="p">{</span>
+		<span class="n">t</span><span class="p">()</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Go playground: <a href="https://go.dev/play/p/RHYBqB9qeZ3">https://go.dev/play/p/RHYBqB9qeZ3</a>.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>go run <span class="nb">.</span>
+<span class="go">1
+2
+3
+</span></code></pre></div></div>
+
+    </div>
+  </div>
+
+</div>
+
+
+  <div class="py-6 mt-6 border-t-2 block md:hidden">
+    <h3 class="text-sm font-medium mb-1">Categories</h3>
+    <div>
+      
+        <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/golang">Golang</a>
+      
+        <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/development">Development</a>
+      
+    </div>
+  </div>
+
+
+
+<div id="disqus_thread"></div>
+<script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+
+    var disqus_config = function () {
+    this.page.url = "https://a-trick-a-day.github.io/blog/2022-08-11-golang-function-in-function/";  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = "/blog/2022-08-11-golang-function-in-function/"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://a-trick-a-day.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer class="py-6 border-t-2">
+  <div class="container mx-auto">
+    <div class="flex mb-2">
+      
+      <a class="py-2 mr-2" href="https://github.com/a-trick-a-day/a-trick-a-day.github.io"><img width="24" height="24" src="https://simpleicons.org/icons/github.svg" alt="Github" /></a>
+      
+    </div>
+    <div class="text-sm text-gray-600">
+      <span>Free Jekyll theme by</span>
+<a class="text-yellow-500" href="
+        https://www.zerostatic.io">Zerostatic Themes</a>
+    </div>
+</footer>
+    </div>
+    
+    
+    
+
+    <script type="text/javascript" src="/assets/js/hamburger.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch"></script>
+    <script type="text/javascript">
+      const { autocomplete, getAlgoliaResults } = window['@algolia/autocomplete-js'];
+      const searchClient = algoliasearch("8DJJ22AAKU", "5cd6440f030be29cec8c1d622bcca722")
+      autocomplete({
+        container: '#search-autocomplete',
+        placeholder: 'Search for posts',
+        getSources({ query }) {
+          return [
+            {
+              // sourceId: 'posts',
+              getItems() {
+                return getAlgoliaResults({
+                  searchClient,
+                  queries: [
+                    {
+                      indexName: 'posts',
+                      query,
+                      params: {
+                        hitsPerPage: 5,
+                        attributesToSnippet: ['name:10', 'description:35'],
+                        snippetEllipsisText: '…',
+                      },
+                    },
+                  ],
+                });
+              },
+              templates: {
+                item({ item, components, html }) {
+                  return html`<a class="aa-ItemWrapper" href="/${item.url.substring(1)}">
+                    <div class="aa-ItemContent">
+                      ${item.thumbnail ? html`<div class="aa-ItemIcon aa-ItemIcon--alignTop">
+                        <img
+                          src="/${item.thumbnail}"
+                          alt="${item.title}"
+                          width="40"
+                          height="40"
+                        />
+                      </div>` : ""}
+                      <div class="aa-ItemContentBody">
+                        <div class="aa-ItemContentTitle">
+                          ${components.Highlight({ hit: item, attribute: 'title' })}
+                        </div>
+                        <div class="aa-ItemContentDescription">
+                          ${item.authors ? html`By <strong>${item.authors[0]}</strong> in ${' '}` : ""}
+                          ${item.categories ? html`<strong>${item.categories[0]}</strong>` : ""}
+                        </div>
+                      </div>
+                    </div>
+                  </a>`;
+                },
+              },
+            },
+          ];
+        },
+        render({ children, render, html }, root) {
+          render(html`<div class="aa-SomeResults">${children}</div>`, root);
+        },
+        renderNoResults({ children, render, html }, root) {
+          render(html`<div class="aa-NoResults"><div class="aa-PanelLayout aa-Panel--scrollable">No posts found</div></div>`, root);
+        },
+      });
+    </script>
+  </body>
+</html>

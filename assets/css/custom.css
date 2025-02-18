@@ -1,0 +1,14 @@
+body {
+}
+
+:root {
+  --aa-primary-color-rgb: 197, 101, 31;
+}
+
+#search-autocomplete {
+  width: 85vh;
+}
+
+.prose.post {
+  max-width: 90ch;
+}

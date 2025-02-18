@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <title>
+  
+    Top List of Libraries for CRUD
+    -
+    A Trick A Day
+  
+</title>
+
+
+  <meta name="description" content="You start a new CRUD project but you don't know which library to choose, you will find here the top libraries."/>
+
+
+<meta property="og:title" content="Top List of Libraries for CRUD"/>
+
+<meta content="website" property="og:type"/>
+<meta property="og:url" content="/blog/2022-08-23-golang-libraries-tier-list/"/>
+
+<meta property="og:description" content="You start a new CRUD project but you don't know which library to choose, you will find here the top libraries."/>
+
+<meta content="summary" name="twitter:card"/>
+
+
+
+    <link rel="icon" href="/assets/images/logo/logo.svg" sizes="any" type="image/svg+xml">
+    <link href="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-theme-classic@1/dist/theme.min.css" rel="stylesheet"/>
+    <link href="/assets/css/style.css" rel="stylesheet">
+  </head>
+  <body class="page ">
+    <div id="menu-container"
+  class=" bg-red-600 h-screen w-screen fixed z-50 p-8 flex-col items-center justify-around bg-gradient-to-b from-yellow-400 to-red-800 opacity-90 overflow-hidden hidden">
+  <div id="menu-close" class="top-7 right-7 absolute">
+    <svg aria-hidden="true" focusable="false" class="h-6 text-white" role="img" xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 352 512">
+      <path fill="currentColor"
+        d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
+      </path>
+    </svg>
+  </div>
+  <div class="flex flex-col text-center text-white text-2xl font-bold">
+    
+    <a class="py-2" href="/a-trick-a-day/">Home</a>
+    
+    <a class="py-2" href="/a-trick-a-day/blog/">Blog</a>
+    
+    <a class="py-2" href="/a-trick-a-day/about/">About</a>
+    
+    <a class="py-2" href="/a-trick-a-day/category/golang">Golang</a>
+    
+  </div>
+</div>
+    <div class="container mx-auto px-6 md:px-4">
+      
+        
+        
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    
+        If you like this blog and want to contribute, read <a href="/blog/2022-08-09-blog-how-to-contibute/" class="underline">this post</a>.
+        
+  </div>
+</div>
+      
+      <header class="flex items-center justify-between py-6">
+  <div class="logo hidden md:block">
+  <a class="flex items-center hover:opacity-70 transition duration-300 ease-in-out" href="/">
+    
+    <img class="mr-2" height="36px" width="36px"
+      alt="A Trick A Day Logo" src="/assets/images/logo/logo.svg" />
+    
+    
+    <h2 class="text-2xl font-sans font-semibold">A Trick <strong>A Day</strong></h2>
+    
+  </a>
+</div>
+<div class="logo-mobile block md:hidden">
+  <a class="flex items-center hover:opacity-70 transition duration-300 ease-in-out" href="/">
+    
+    <img height="36px" width="36px"
+      alt="A Trick A Day Logo" src="/assets/images/logo/logo.svg" />
+    
+    
+    <h2 class="text-2xl font-sans font-semibold"></h2>
+    
+  </a>
+</div>
+  <div id="search-autocomplete"></div>
+
+  <div class="" id="menu-trigger">
+    <svg aria-hidden="true" class="text-black" data-icon="bars" data-prefix="fas" focusable="false" height="24"
+      role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"
+        fill="currentColor"></path>
+    </svg>
+  </div>
+</header>
+      
+
+
+
+
+<div class="py-6 md:py-12 lg:w-10/12 md:text-center mx-auto">
+  
+  <div class="font-medium text-gray-700">23 August 2022</div>
+  
+  <h1 class="heading text-4xl md:text-6xl font-bold font-sans md:leading-tight">
+    Top List of Libraries for CRUD
+  </h1>
+  
+  <h2 class="text-xl text-gray-600 mt-2">You start a new CRUD project but you don't know which library to choose, you will find here the top libraries.</h2>
+  
+</div>
+
+
+  <div class="flex flex-col pb-3 md:hidden">
+    
+      
+
+
+
+<div class="flex items-center mb-3 last:mb-0">
+  
+    <img height="48" width="48" class="rounded-full border-white border-2" src="/assets/images/author/sidorenko-konstantin.jpg" alt="Sidorenko Konstantin"/>
+  
+  <div>
+    <span class="font-medium text-sm ml-1 block">Sidorenko Konstantin</span>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://www.twitter.com/"></a>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://github.com/thecampagnards">thecampagnards</a>
+  </div>
+</div>
+
+    
+  </div>
+
+
+
+
+<div class="flex flex-col md:flex-row py-6 md:py-12">
+
+  <div class="w-full md:w-3/12 pr-3">
+    
+      <div class="flex flex-col hidden md:flex mb-3 md:mb-6">
+        
+          
+
+
+
+<div class="flex items-center mb-3 last:mb-0">
+  
+    <img height="48" width="48" class="rounded-full border-white border-2" src="/assets/images/author/sidorenko-konstantin.jpg" alt="Sidorenko Konstantin"/>
+  
+  <div>
+    <span class="font-medium text-sm ml-1 block">Sidorenko Konstantin</span>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://www.twitter.com/"></a>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://github.com/thecampagnards">thecampagnards</a>
+  </div>
+</div>
+
+        
+      </div>
+    
+
+    
+      <div class="hidden md:block">
+        
+          <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/golang">Golang</a>
+        
+          <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/development">Development</a>
+        
+      </div>
+    
+  </div>
+
+  <div class="w-full md:w-9/12">
+    <div class="prose post">
+      <p>This post was written on 23 August 2022, the libraries can change, be in maintenance mode etc.</p>
+
+<p>When you choose a library in Go, <strong>pay attention to several points</strong>:</p>
+
+<ul>
+  <li>look if the library is in <strong>maintenance mode</strong></li>
+  <li>look at the number of <strong>stars</strong></li>
+  <li>look at the <strong>date</strong> of the <strong>last commit</strong></li>
+</ul>
+
+<p>With these points you will have <strong>more or less</strong> an opinion on the <strong>reliability</strong> of this library.</p>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    It is a personal opinion which is made on these libs, if you have better suggestions, do not hesitate to write it in comment.
+  </div>
+</div>
+
+<h2 id="http-server"><ins>HTTP Server</ins></h2>
+
+<h3 id="generator">Generator</h3>
+
+<h3 id="go-swagger"><a href="https://github.com/go-swagger/go-swagger">go-swagger</a></h3>
+
+<p>Brings to the go community a complete suite of fully-featured, high-performance, API components to work with a Swagger API: <strong>server</strong>, <strong>client</strong> and <strong>data model</strong>.</p>
+
+<ul>
+  <li>Generates a <strong>server</strong> from a swagger specification</li>
+  <li>Generates a <strong>client</strong> from a swagger specification</li>
+  <li>Generates a <strong>CLI</strong> (command line tool) from a swagger specification (alpha stage)</li>
+  <li>Supports most <strong>features</strong> offered by <strong>jsonschema</strong> and <strong>swagger</strong>, including polymorphism</li>
+  <li>Generates a <strong>swagger specification</strong> from annotated go code</li>
+  <li>Additional tools to work with a <strong>swagger spec</strong></li>
+  <li>Great customization features, with vendor extensions and customizable templates</li>
+</ul>
+
+<p>The <strong>go-swagger</strong> focus with code generation is to produce <strong>idiomatic</strong>, <strong>fast go code</strong>, which plays <strong>nice with golint</strong>, go vet etc.</p>
+
+<p>It will also do the <strong>parameter checks</strong> for you, such as <strong>enums</strong>, <strong>minimum for numbers</strong> etc.</p>
+
+<div id="alert-border-4" class="flex p-4 mb-4 bg-yellow-100 border-t-4 border-yellow-500 dark:bg-yellow-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-yellow-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-yellow-700">
+    It works <strong>only</strong> with <strong>Swagger 2.0</strong>.
+  </div>
+</div>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    This is a must have if you have a <strong>Swagger 2.0</strong> specification to <strong>generate</strong> your <strong>client</strong> or <strong>server</strong>.
+  </div>
+</div>
+
+<h3 id="oapi-codegen"><a href="https://github.com/deepmap/oapi-codegen">oapi-codegen</a></h3>
+
+<p>Is a code generator for <strong>OpenAPI 3.0</strong>, it can <strong>generate</strong> <strong>server</strong>, <strong>client</strong>, <strong>models</strong> etc.
+For the <strong>server generator</strong> it can generate code for <strong><a href="#echo">echo</a></strong>, <strong>chi</strong>, <strong><a href="#Gin">Gin</a></strong> and <strong>net/http</strong>.</p>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    This is a must have if you have an <strong>OpenAPI 3.0</strong> specification to <strong>generate</strong> your <strong>client</strong> or <strong>server</strong>.
+  </div>
+</div>
+
+<h3 id="manual-coding">Manual Coding</h3>
+
+<h3 id="fiber"><a href="https://github.com/gofiber/fiber">fiber</a></h3>
+
+<p>Is an <strong>Express inspired</strong> web framework built on <strong>top of <a href="https://github.com/valyala/fasthttp">Fasthttp</a></strong>, the <strong>fastest HTTP engine</strong> for Go.
+Designed to ease things up for fast development with <strong>zero memory allocation</strong> and <strong>performance in mind</strong>.</p>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    Focus on <strong>performance</strong> and manage <strong>JSON</strong>, <strong>JWT</strong> etc.<br />With this, your <strong>APIs will rox</strong>!
+  </div>
+</div>
+
+<h3 id="echo"><a href="https://github.com/labstack/echo">echo</a></h3>
+
+<p><strong>Simplifies the creation</strong> of web applications and restful APIs. If you have Python experience, you may find the framework similar to Flask.</p>
+
+<p>With the <strong>rise of <a href="#fiber">fiber</a></strong> which does almost the same thing with better performance, <strong>echo</strong> has a <strong>slight drop in popularity</strong>.
+But it’s still a <strong>classic</strong> in Go.</p>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    Echo handles <strong>JSON</strong>, <strong>JWT</strong> etc.<br />Everything you need to build a REST API.
+  </div>
+</div>
+
+<h3 id="gin"><a href="https://github.com/gin-gonic/gin">gin</a></h3>
+
+<p>Is a web framework written in Go. It features a <a href="https://github.com/go-martini/martini">martini-like</a> API with performance that is up to 40 times faster thanks to <a href="https://github.com/julienschmidt/httprouter">httprouter</a>.</p>
+
+<p>With the <strong>rise of <a href="#fiber">fiber</a></strong> which does almost the same thing with better performance, <strong>gin</strong> has a <strong>slight drop in popularity</strong>.
+But it’s still a <strong>classic</strong> in Go.</p>
+
+<h2 id="database"><ins>Database</ins></h2>
+
+<h2 id="postgres">Postgres</h2>
+
+<h3 id="generator-1">Generator</h3>
+
+<h3 id="sql-to-go"><a href="https://github.com/thecampagnards/sql-to-go">sql-to-go</a></h3>
+
+<p><strong>Generates</strong> Go <strong>structures</strong> and <strong>functions</strong> based on an <strong>SQL files</strong> containing <strong>create tables</strong> and <strong>alter</strong>.</p>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    Can be useful to <strong>generate your models</strong> if you have to <strong>write your SQL scripts</strong>.
+  </div>
+</div>
+
+<h3 id="manual-coding-1">Manual Coding</h3>
+
+<h3 id="bun"><a href="https://bun.uptrace.dev/">bun</a></h3>
+
+<p>Is a <strong>lightweight</strong> Go <strong>ORM</strong> for PostgreSQL, MySQL, MSSQL, and SQLite.
+Bun is a rewrite of <a href="https://github.com/go-pg/pg">go-pg</a>.</p>
+
+<p><strong><a href="https://github.com/go-pg/pg">go-pg</a></strong> is still <strong>maintained</strong> and there is <strong>no urgency</strong> in <strong>rewriting go-pg</strong> apps in Bun, but <strong>new projects</strong> should <strong>prefer Bun</strong> over go-pg. And once you are familiar with the updated API, you should be able to migrate a 80-100k lines go-pg app to Bun within a single day.</p>
+
+<p>It is usually <strong>easier</strong> to <strong>write complex queries</strong> with Bun rather <strong>than <a href="https://github.com/go-gorm/gorm">GORM</a></strong>. Out of the box, Bun has <strong>better integration</strong> with <strong>database-specific functionality</strong>, for example, PostgreSQL <strong>arrays</strong>. Bun is also <strong>faster</strong>, partly because <strong>Bun</strong> is <strong>smaller in size and scope</strong>.</p>
+
+<p>Bun does <strong>not support</strong> such <strong>popular <a href="https://github.com/go-gorm/gorm">GORM</a> features</strong> like <strong>automatic migrations</strong>, <strong>optimizer/index/comment hints</strong>, and database resolver.</p>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    It's a <strong>classic</strong> in Go when using <strong>Postgres</strong>.
+  </div>
+</div>
+
+<h2 id="mongo">Mongo</h2>
+
+<h3 id="mongo-go-driver"><a href="https://github.com/mongodb/mongo-go-driver">mongo-go-driver</a></h3>
+
+<p>Is the <strong>official</strong> MongoDB supported <strong>driver</strong> for Go.</p>
+
+<h2 id="logger">Logger</h2>
+
+<h2 id="zerolog"><a href="https://github.com/rs/zerolog">zerolog</a></h2>
+
+<p>The zerolog package provides a fast and simple logger dedicated to JSON output.</p>
+
+<p>Zerolog’s API is designed to provide both a great developer experience and stunning <a href="https://github.com/rs/zerolog#benchmarks">performance</a>. Its unique chaining API allows zerolog to write JSON (or CBOR) log events by avoiding allocations and reflection.</p>
+
+<p>Uber’s <a href="https://godoc.org/go.uber.org/zap">zap</a> library pioneered this approach. Zerolog is taking this concept to the next level with a simpler to use API and even better performance.</p>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    It provide <strong>HTTP handlers</strong> to build your logger with some request informations.
+  </div>
+</div>
+
+<h2 id="zap"><a href="https://github.com/uber-go/zap">zap</a></h2>
+
+<p>Blazing fast, structured, leveled logging in Go.</p>
+
+<h2 id="config">Config</h2>
+
+<h2 id="cleanenv"><a href="https://github.com/ilyakaznacheev/cleanenv">cleanenv</a></h2>
+
+<p>Is a <strong>minimalistic</strong> <strong>configuration reader</strong>.</p>
+
+<p>This is a simple configuration reading tool. It just does the following:</p>
+
+<ul>
+  <li><strong>reads</strong> and parses configuration structure <strong>from the file</strong></li>
+  <li><strong>reads</strong> and overwrites configuration structure <strong>from environment variables</strong></li>
+  <li><strong>writes</strong> a <strong>detailed variable</strong> list to help output</li>
+</ul>
+
+<h2 id="viper"><a href="https://github.com/spf13/viper">viper</a></h2>
+
+<p>Viper is a <strong>complete configuration solution</strong> for Go applications including 12-Factor apps.
+It is designed to work within an application, and can handle <strong>all types of configuration</strong> needs and formats. It supports:</p>
+
+<ul>
+  <li>setting defaults</li>
+  <li>reading from JSON, TOML, YAML, HCL, envfile and Java properties config files</li>
+  <li>live watching and re-reading of config files (optional)</li>
+  <li>reading from environment variables</li>
+  <li>reading from remote config systems (etcd or Consul), and watching changes</li>
+  <li>reading from command line flags</li>
+  <li>reading from buffer</li>
+  <li>setting explicit values</li>
+</ul>
+
+<p>Viper can be thought of as a registry for all of your applications configuration needs.</p>
+
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    viper is a <strong>heavy solution</strong>, I usually use it more for building CLI mixed with <a href="https://github.com/spf13/cobra">cobra</a>.
+  </div>
+</div>
+
+<h2 id="references">References</h2>
+
+<p>List of awesome go tools: <a href="https://github.com/avelino/awesome-go">https://github.com/avelino/awesome-go</a></p>
+
+    </div>
+  </div>
+
+</div>
+
+
+  <div class="py-6 mt-6 border-t-2 block md:hidden">
+    <h3 class="text-sm font-medium mb-1">Categories</h3>
+    <div>
+      
+        <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/golang">Golang</a>
+      
+        <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/development">Development</a>
+      
+    </div>
+  </div>
+
+
+
+<div id="disqus_thread"></div>
+<script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+
+    var disqus_config = function () {
+    this.page.url = "https://a-trick-a-day.github.io/blog/2022-08-23-golang-libraries-tier-list/";  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = "/blog/2022-08-23-golang-libraries-tier-list/"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://a-trick-a-day.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer class="py-6 border-t-2">
+  <div class="container mx-auto">
+    <div class="flex mb-2">
+      
+      <a class="py-2 mr-2" href="https://github.com/a-trick-a-day/a-trick-a-day.github.io"><img width="24" height="24" src="https://simpleicons.org/icons/github.svg" alt="Github" /></a>
+      
+    </div>
+    <div class="text-sm text-gray-600">
+      <span>Free Jekyll theme by</span>
+<a class="text-yellow-500" href="
+        https://www.zerostatic.io">Zerostatic Themes</a>
+    </div>
+</footer>
+    </div>
+    
+    
+    
+
+    <script type="text/javascript" src="/assets/js/hamburger.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch"></script>
+    <script type="text/javascript">
+      const { autocomplete, getAlgoliaResults } = window['@algolia/autocomplete-js'];
+      const searchClient = algoliasearch("8DJJ22AAKU", "5cd6440f030be29cec8c1d622bcca722")
+      autocomplete({
+        container: '#search-autocomplete',
+        placeholder: 'Search for posts',
+        getSources({ query }) {
+          return [
+            {
+              // sourceId: 'posts',
+              getItems() {
+                return getAlgoliaResults({
+                  searchClient,
+                  queries: [
+                    {
+                      indexName: 'posts',
+                      query,
+                      params: {
+                        hitsPerPage: 5,
+                        attributesToSnippet: ['name:10', 'description:35'],
+                        snippetEllipsisText: '…',
+                      },
+                    },
+                  ],
+                });
+              },
+              templates: {
+                item({ item, components, html }) {
+                  return html`<a class="aa-ItemWrapper" href="/${item.url.substring(1)}">
+                    <div class="aa-ItemContent">
+                      ${item.thumbnail ? html`<div class="aa-ItemIcon aa-ItemIcon--alignTop">
+                        <img
+                          src="/${item.thumbnail}"
+                          alt="${item.title}"
+                          width="40"
+                          height="40"
+                        />
+                      </div>` : ""}
+                      <div class="aa-ItemContentBody">
+                        <div class="aa-ItemContentTitle">
+                          ${components.Highlight({ hit: item, attribute: 'title' })}
+                        </div>
+                        <div class="aa-ItemContentDescription">
+                          ${item.authors ? html`By <strong>${item.authors[0]}</strong> in ${' '}` : ""}
+                          ${item.categories ? html`<strong>${item.categories[0]}</strong>` : ""}
+                        </div>
+                      </div>
+                    </div>
+                  </a>`;
+                },
+              },
+            },
+          ];
+        },
+        render({ children, render, html }, root) {
+          render(html`<div class="aa-SomeResults">${children}</div>`, root);
+        },
+        renderNoResults({ children, render, html }, root) {
+          render(html`<div class="aa-NoResults"><div class="aa-PanelLayout aa-Panel--scrollable">No posts found</div></div>`, root);
+        },
+      });
+    </script>
+  </body>
+</html>

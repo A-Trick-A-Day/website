@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <title>
+  
+    Application & Containers
+    -
+    A Trick A Day
+  
+</title>
+
+
+  <meta name="description" content="How to optimize the containerization of your application."/>
+
+
+<meta property="og:title" content="Application & Containers"/>
+
+<meta content="website" property="og:type"/>
+<meta property="og:url" content="/blog/2022-08-10-container-application-&-containers/"/>
+
+<meta property="og:description" content="How to optimize the containerization of your application."/>
+
+<meta content="summary" name="twitter:card"/>
+
+
+
+    <link rel="icon" href="/assets/images/logo/logo.svg" sizes="any" type="image/svg+xml">
+    <link href="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-theme-classic@1/dist/theme.min.css" rel="stylesheet"/>
+    <link href="/assets/css/style.css" rel="stylesheet">
+  </head>
+  <body class="page ">
+    <div id="menu-container"
+  class=" bg-red-600 h-screen w-screen fixed z-50 p-8 flex-col items-center justify-around bg-gradient-to-b from-yellow-400 to-red-800 opacity-90 overflow-hidden hidden">
+  <div id="menu-close" class="top-7 right-7 absolute">
+    <svg aria-hidden="true" focusable="false" class="h-6 text-white" role="img" xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 352 512">
+      <path fill="currentColor"
+        d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
+      </path>
+    </svg>
+  </div>
+  <div class="flex flex-col text-center text-white text-2xl font-bold">
+    
+    <a class="py-2" href="/a-trick-a-day/">Home</a>
+    
+    <a class="py-2" href="/a-trick-a-day/blog/">Blog</a>
+    
+    <a class="py-2" href="/a-trick-a-day/about/">About</a>
+    
+    <a class="py-2" href="/a-trick-a-day/category/golang">Golang</a>
+    
+  </div>
+</div>
+    <div class="container mx-auto px-6 md:px-4">
+      
+        
+        
+<div class="flex p-4 mb-4 bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+  <svg class="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+  <div class="ml-3 text-sm font-medium text-blue-700">
+    
+        If you like this blog and want to contribute, read <a href="/blog/2022-08-09-blog-how-to-contibute/" class="underline">this post</a>.
+        
+  </div>
+</div>
+      
+      <header class="flex items-center justify-between py-6">
+  <div class="logo hidden md:block">
+  <a class="flex items-center hover:opacity-70 transition duration-300 ease-in-out" href="/">
+    
+    <img class="mr-2" height="36px" width="36px"
+      alt="A Trick A Day Logo" src="/assets/images/logo/logo.svg" />
+    
+    
+    <h2 class="text-2xl font-sans font-semibold">A Trick <strong>A Day</strong></h2>
+    
+  </a>
+</div>
+<div class="logo-mobile block md:hidden">
+  <a class="flex items-center hover:opacity-70 transition duration-300 ease-in-out" href="/">
+    
+    <img height="36px" width="36px"
+      alt="A Trick A Day Logo" src="/assets/images/logo/logo.svg" />
+    
+    
+    <h2 class="text-2xl font-sans font-semibold"></h2>
+    
+  </a>
+</div>
+  <div id="search-autocomplete"></div>
+
+  <div class="" id="menu-trigger">
+    <svg aria-hidden="true" class="text-black" data-icon="bars" data-prefix="fas" focusable="false" height="24"
+      role="img" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"
+        fill="currentColor"></path>
+    </svg>
+  </div>
+</header>
+      
+
+
+
+
+<div class="py-6 md:py-12 lg:w-10/12 md:text-center mx-auto">
+  
+  <div class="font-medium text-gray-700">10 August 2022</div>
+  
+  <h1 class="heading text-4xl md:text-6xl font-bold font-sans md:leading-tight">
+    Application & Containers
+  </h1>
+  
+  <h2 class="text-xl text-gray-600 mt-2">How to optimize the containerization of your application.</h2>
+  
+</div>
+
+
+  <div class="flex flex-col pb-3 md:hidden">
+    
+      
+
+
+
+<div class="flex items-center mb-3 last:mb-0">
+  
+    <img height="48" width="48" class="rounded-full border-white border-2" src="/assets/images/author/sidorenko-konstantin.jpg" alt="Sidorenko Konstantin"/>
+  
+  <div>
+    <span class="font-medium text-sm ml-1 block">Sidorenko Konstantin</span>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://www.twitter.com/"></a>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://github.com/thecampagnards">thecampagnards</a>
+  </div>
+</div>
+
+    
+  </div>
+
+
+
+
+<div class="flex flex-col md:flex-row py-6 md:py-12">
+
+  <div class="w-full md:w-3/12 pr-3">
+    
+      <div class="flex flex-col hidden md:flex mb-3 md:mb-6">
+        
+          
+
+
+
+<div class="flex items-center mb-3 last:mb-0">
+  
+    <img height="48" width="48" class="rounded-full border-white border-2" src="/assets/images/author/sidorenko-konstantin.jpg" alt="Sidorenko Konstantin"/>
+  
+  <div>
+    <span class="font-medium text-sm ml-1 block">Sidorenko Konstantin</span>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://www.twitter.com/"></a>
+    <a class="text-sm ml-1 block text-yellow-400" href="https://github.com/thecampagnards">thecampagnards</a>
+  </div>
+</div>
+
+        
+      </div>
+    
+
+    
+      <div class="hidden md:block">
+        
+          <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/container">Container</a>
+        
+          <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/ci">CI</a>
+        
+      </div>
+    
+  </div>
+
+  <div class="w-full md:w-9/12">
+    <div class="prose post">
+      
+<div class="flex p-4 mb-4 bg-green-100 border-t-4 border-green-500 dark:bg-green-200" role="alert">
+  
+  <svg class="flex-shrink-0 w-5 h-5 text-green-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M 20 6.460938 C 20 11.457031 17.265625 15.652344 13.152344 17.011719 C 12.371094 17.320312 11.519531 17.5 10.625 17.5 C 8.089844 17.5 5.734375 16.070312 4.542969 13.808594 C 2.429688 15.757812 1.859375 17.988281 1.847656 18.03125 C 1.746094 18.460938 1.363281 18.75 0.9375 18.75 C 0.867188 18.75 0.792969 18.742188 0.71875 18.722656 C 0.214844 18.601562 -0.09375 18.097656 0.0273438 17.59375 C 0.402344 16.050781 3.558594 8.75 13.125 8.75 C 13.46875 8.75 13.75 8.46875 13.75 8.125 C 13.75 7.78125 13.46875 7.5 13.125 7.5 C 8.929688 7.5 5.898438 8.851562 3.761719 10.453125 C 3.769531 10.03125 3.808594 9.601562 3.898438 9.164062 C 4.425781 6.589844 6.480469 4.515625 9.03125 3.921875 C 10.140625 3.664062 11.207031 3.683594 12.195312 3.917969 C 14.382812 4.441406 16.8125 3.628906 18.027344 1.527344 C 18.246094 1.144531 18.808594 1.15625 18.988281 1.558594 C 19.636719 3 20 4.761719 20 6.460938 Z M 20 6.460938 " /></svg>
+  <div class="ml-3 text-sm font-medium text-green-700">
+    <strong>Optimizing your docker images</strong> to avoid importing the <strong>whole "planet"</strong> can be a good thing.
+  </div>
+</div>
+
+<p>In this post I will take the example of a Go application but it can be well applied to other languages.</p>
+
+<h2 id="scratch"><a href="https://hub.docker.com/_/scratch">Scratch</a></h2>
+
+<p><strong>Scratch</strong> is a reserved image of <strong>size 0</strong> with nothing in it.
+Using a scratch image <strong>reduces the size</strong> of a final Docker image by <strong>~50%</strong> compare to an <a href="https://hub.docker.com/_/alpine">alpine image</a>!
+Not bad, right?</p>
+
+<p>Except that the image can’t do SSL certificate verification because of the <strong>missing SSL certificates</strong>!</p>
+
+<p>Writing a simple Go application that request <a href="https://google.com">https://google.com</a>, and package it inside <strong>scratch</strong>:</p>
+
+<div class="language-Dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="w"> </span><span class="s">golang:1.19-alpine</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="s">builder</span>
+
+<span class="k">WORKDIR</span><span class="s"> /go/src/app</span>
+<span class="k">RUN </span>go mod init example
+<span class="k">RUN </span><span class="nb">echo</span> <span class="nt">-e</span> <span class="s1">'package main\n</span><span class="se">\
+</span><span class="s1">import "net/http"\n</span><span class="se">\
+</span><span class="s1">func main() {\n</span><span class="se">\
+</span><span class="s1">	if _, err := http.Get("https://google.com"); err != nil {\n</span><span class="se">\
+</span><span class="s1">		panic(err)\n</span><span class="se">\
+</span><span class="s1">	}\n</span><span class="se">\
+</span><span class="s1">}'</span> <span class="o">&gt;</span> main.go
+
+<span class="k">RUN </span><span class="nv">CGO_ENABLED</span><span class="o">=</span>0 go build <span class="nt">-a</span> <span class="nt">-ldflags</span> <span class="s2">"-s -w"</span> <span class="nt">-o</span> /go/bin/app
+
+<span class="k">FROM</span><span class="s"> scratch</span>
+<span class="k">COPY</span><span class="s"> --from=builder /go/bin/app /</span>
+<span class="k">CMD</span><span class="s"> ["/app"]</span>
+</code></pre></div></div>
+
+<p>Go playground: <a href="https://go.dev/play/p/U9_V7aoIiaZ">https://go.dev/play/p/U9_V7aoIiaZ</a>.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">panic: Get "https://google.com": x509: certificate signed by unknown authority
+
+goroutine 1 [running]:
+main.main()
+        /go/src/app/main.go:5 +0x4c
+</span></code></pre></div></div>
+
+<p>As you can see, it is impossible to request an https URL.
+You’ll have to do this to make it work:</p>
+
+<div class="language-Dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="w"> </span><span class="s">alpine:3.16</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="s">builder-cert</span>
+
+<span class="k">RUN </span>apk add <span class="nt">--no-cache</span> ca-certificates
+
+<span class="k">FROM</span><span class="w"> </span><span class="s">golang:1.19-alpine</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="s">builder-go</span>
+
+<span class="k">WORKDIR</span><span class="s"> /go/src/app</span>
+<span class="k">RUN </span>go mod init example
+<span class="k">RUN </span><span class="nb">echo</span> <span class="nt">-e</span> <span class="s1">'package main\n</span><span class="se">\
+</span><span class="s1">import "net/http"\n</span><span class="se">\
+</span><span class="s1">func main() {\n</span><span class="se">\
+</span><span class="s1">	if _, err := http.Get("https://google.com"); err != nil {\n</span><span class="se">\
+</span><span class="s1">		panic(err)\n</span><span class="se">\
+</span><span class="s1">	}\n</span><span class="se">\
+</span><span class="s1">}'</span> <span class="o">&gt;</span> main.go
+
+<span class="k">RUN </span><span class="nv">CGO_ENABLED</span><span class="o">=</span>0 go build <span class="nt">-a</span> <span class="nt">-ldflags</span> <span class="s2">"-s -w"</span> <span class="nt">-o</span> /go/bin/app
+
+<span class="k">FROM</span><span class="s"> scratch</span>
+<span class="c"># import the certs to make them available in scratch</span>
+<span class="k">COPY</span><span class="s"> --from=builder-cert /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/</span>
+<span class="k">COPY</span><span class="s"> --from=builder-go /go/bin/app /</span>
+<span class="k">CMD</span><span class="s"> ["/app"]</span>
+</code></pre></div></div>
+
+<p>Personally, you can opt for <strong>scratch</strong> if you don’t need the SSL certificates.
+But I think it’s <strong>better</strong> to use a ~2 MiB <strong>distroless images</strong>, which we’ll see now.</p>
+
+<h2 id="distroless">Distroless</h2>
+
+<p><strong>Distroless</strong> images contain only your <strong>application and its runtime dependencies</strong>. They do not contain package managers, shells or other programs that you would expect to find in a standard Linux distribution.</p>
+
+<p><strong>Limiting the contents</strong> of your runtime container to precisely what is needed for your application is a <strong>good practice</strong> used. It <strong>improves the signal-to-noise</strong> ratio of scanners (e.g. CVE) and reduces the burden of establishing provenance to what you need.</p>
+
+<div class="flex p-4 mb-4 bg-green-100 border-t-4 border-green-500 dark:bg-green-200" role="alert">
+  
+  <svg class="flex-shrink-0 w-5 h-5 text-green-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M 20 6.460938 C 20 11.457031 17.265625 15.652344 13.152344 17.011719 C 12.371094 17.320312 11.519531 17.5 10.625 17.5 C 8.089844 17.5 5.734375 16.070312 4.542969 13.808594 C 2.429688 15.757812 1.859375 17.988281 1.847656 18.03125 C 1.746094 18.460938 1.363281 18.75 0.9375 18.75 C 0.867188 18.75 0.792969 18.742188 0.71875 18.722656 C 0.214844 18.601562 -0.09375 18.097656 0.0273438 17.59375 C 0.402344 16.050781 3.558594 8.75 13.125 8.75 C 13.46875 8.75 13.75 8.46875 13.75 8.125 C 13.75 7.78125 13.46875 7.5 13.125 7.5 C 8.929688 7.5 5.898438 8.851562 3.761719 10.453125 C 3.769531 10.03125 3.808594 9.601562 3.898438 9.164062 C 4.425781 6.589844 6.480469 4.515625 9.03125 3.921875 C 10.140625 3.664062 11.207031 3.683594 12.195312 3.917969 C 14.382812 4.441406 16.8125 3.628906 18.027344 1.527344 C 18.246094 1.144531 18.808594 1.15625 18.988281 1.558594 C 19.636719 3 20 4.761719 20 6.460938 Z M 20 6.460938 " /></svg>
+  <div class="ml-3 text-sm font-medium text-green-700">
+    <strong>Distroless images</strong> contain only the minimum requirements for an application so they are very small.
+  </div>
+</div>
+
+<h3 id="google-images"><a href="https://github.com/GoogleContainerTools/distroless">Google Images</a></h3>
+
+<p>The smallest distroless image, <a href="https://github.com/GoogleContainerTools/distroless/blob/main/base/README.md">gcr.io/distroless/static-debian11</a>, is about 2 MiB. This is about <strong>50% of the size of Alpine (~5 MiB)</strong>, and <strong>less than 2% of the size of Debian (124 MiB)</strong>.</p>
+
+<p>Dockerfile using the distroless image:</p>
+
+<div class="language-Dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="w"> </span><span class="s">golang:1.19-alpine</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="s">builder</span>
+
+<span class="k">WORKDIR</span><span class="s"> /go/src/app</span>
+<span class="k">RUN </span>go mod init example
+<span class="k">RUN </span><span class="nb">echo</span> <span class="nt">-e</span> <span class="s1">'package main\n</span><span class="se">\
+</span><span class="s1">import "net/http"\n</span><span class="se">\
+</span><span class="s1">func main() {\n</span><span class="se">\
+</span><span class="s1">	if _, err := http.Get("https://google.com"); err != nil {\n</span><span class="se">\
+</span><span class="s1">		panic(err)\n</span><span class="se">\
+</span><span class="s1">	}\n</span><span class="se">\
+</span><span class="s1">}'</span> <span class="o">&gt;</span> main.go
+
+<span class="k">RUN </span><span class="nv">CGO_ENABLED</span><span class="o">=</span>0 go build <span class="nt">-a</span> <span class="nt">-ldflags</span> <span class="s2">"-s -w"</span> <span class="nt">-o</span> /go/bin/app
+
+<span class="k">FROM</span><span class="s"> gcr.io/distroless/static-debian11</span>
+<span class="k">COPY</span><span class="s"> --from=builder /go/bin/app /</span>
+<span class="k">CMD</span><span class="s"> ["/app"]</span>
+</code></pre></div></div>
+
+<h2 id="results">Results</h2>
+
+<p>Overview of different sizes you can get depending on the base images:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>docker image <span class="nb">ls</span>
+<span class="gp">test-alpine        latest   fae3b8af8e1b   3 seconds ago   10.1MB #</span><span class="w"> </span>alpine image
+<span class="gp">test-distroless    latest   98117ef14761   1 minute ago    6.93MB #</span><span class="w"> </span>distroless static-debian11
+<span class="gp">test-scratch-certs latest   b015a7cd8a59   14 minutes ago  4.78MB #</span><span class="w"> </span>scrtach with certs
+<span class="gp">test-scratch       latest   2aee7e47308f   2 hour ago      4.57MB #</span><span class="w"> </span>scratch
+</code></pre></div></div>
+
+<div class="flex p-4 mb-4 bg-green-100 border-t-4 border-green-500 dark:bg-green-200" role="alert">
+  
+  <svg class="flex-shrink-0 w-5 h-5 text-green-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M 20 6.460938 C 20 11.457031 17.265625 15.652344 13.152344 17.011719 C 12.371094 17.320312 11.519531 17.5 10.625 17.5 C 8.089844 17.5 5.734375 16.070312 4.542969 13.808594 C 2.429688 15.757812 1.859375 17.988281 1.847656 18.03125 C 1.746094 18.460938 1.363281 18.75 0.9375 18.75 C 0.867188 18.75 0.792969 18.742188 0.71875 18.722656 C 0.214844 18.601562 -0.09375 18.097656 0.0273438 17.59375 C 0.402344 16.050781 3.558594 8.75 13.125 8.75 C 13.46875 8.75 13.75 8.46875 13.75 8.125 C 13.75 7.78125 13.46875 7.5 13.125 7.5 C 8.929688 7.5 5.898438 8.851562 3.761719 10.453125 C 3.769531 10.03125 3.808594 9.601562 3.898438 9.164062 C 4.425781 6.589844 6.480469 4.515625 9.03125 3.921875 C 10.140625 3.664062 11.207031 3.683594 12.195312 3.917969 C 14.382812 4.441406 16.8125 3.628906 18.027344 1.527344 C 18.246094 1.144531 18.808594 1.15625 18.988281 1.558594 C 19.636719 3 20 4.761719 20 6.460938 Z M 20 6.460938 " /></svg>
+  <div class="ml-3 text-sm font-medium text-green-700">
+    Reducing all the images of your IS by ~50% or more, can change a lot (it reduces the size of the backups even if there is the layer feature, it reduces the size of the images on each of your nodes, if your image is not available on the node it also allows you to pull your images faster and therefore to start faster etc.).
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+
+
+  <div class="py-6 mt-6 border-t-2 block md:hidden">
+    <h3 class="text-sm font-medium mb-1">Categories</h3>
+    <div>
+      
+        <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/container">Container</a>
+      
+        <a class="p-1 px-3 mr-1 mb-1 inline-block text-xs font-mono rounded bg-yellow-200 text-yellow-800 hover:bg-red-200 hover:text-red-800 transition duration-300 ease-in-out" href="/category/ci">CI</a>
+      
+    </div>
+  </div>
+
+
+
+<div id="disqus_thread"></div>
+<script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+
+    var disqus_config = function () {
+    this.page.url = "https://a-trick-a-day.github.io/blog/2022-08-10-container-application-&-containers/";  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = "/blog/2022-08-10-container-application-&-containers/"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://a-trick-a-day.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer class="py-6 border-t-2">
+  <div class="container mx-auto">
+    <div class="flex mb-2">
+      
+      <a class="py-2 mr-2" href="https://github.com/a-trick-a-day/a-trick-a-day.github.io"><img width="24" height="24" src="https://simpleicons.org/icons/github.svg" alt="Github" /></a>
+      
+    </div>
+    <div class="text-sm text-gray-600">
+      <span>Free Jekyll theme by</span>
+<a class="text-yellow-500" href="
+        https://www.zerostatic.io">Zerostatic Themes</a>
+    </div>
+</footer>
+    </div>
+    
+    
+    
+
+    <script type="text/javascript" src="/assets/js/hamburger.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch"></script>
+    <script type="text/javascript">
+      const { autocomplete, getAlgoliaResults } = window['@algolia/autocomplete-js'];
+      const searchClient = algoliasearch("8DJJ22AAKU", "5cd6440f030be29cec8c1d622bcca722")
+      autocomplete({
+        container: '#search-autocomplete',
+        placeholder: 'Search for posts',
+        getSources({ query }) {
+          return [
+            {
+              // sourceId: 'posts',
+              getItems() {
+                return getAlgoliaResults({
+                  searchClient,
+                  queries: [
+                    {
+                      indexName: 'posts',
+                      query,
+                      params: {
+                        hitsPerPage: 5,
+                        attributesToSnippet: ['name:10', 'description:35'],
+                        snippetEllipsisText: '…',
+                      },
+                    },
+                  ],
+                });
+              },
+              templates: {
+                item({ item, components, html }) {
+                  return html`<a class="aa-ItemWrapper" href="/${item.url.substring(1)}">
+                    <div class="aa-ItemContent">
+                      ${item.thumbnail ? html`<div class="aa-ItemIcon aa-ItemIcon--alignTop">
+                        <img
+                          src="/${item.thumbnail}"
+                          alt="${item.title}"
+                          width="40"
+                          height="40"
+                        />
+                      </div>` : ""}
+                      <div class="aa-ItemContentBody">
+                        <div class="aa-ItemContentTitle">
+                          ${components.Highlight({ hit: item, attribute: 'title' })}
+                        </div>
+                        <div class="aa-ItemContentDescription">
+                          ${item.authors ? html`By <strong>${item.authors[0]}</strong> in ${' '}` : ""}
+                          ${item.categories ? html`<strong>${item.categories[0]}</strong>` : ""}
+                        </div>
+                      </div>
+                    </div>
+                  </a>`;
+                },
+              },
+            },
+          ];
+        },
+        render({ children, render, html }, root) {
+          render(html`<div class="aa-SomeResults">${children}</div>`, root);
+        },
+        renderNoResults({ children, render, html }, root) {
+          render(html`<div class="aa-NoResults"><div class="aa-PanelLayout aa-Panel--scrollable">No posts found</div></div>`, root);
+        },
+      });
+    </script>
+  </body>
+</html>
